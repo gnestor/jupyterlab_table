@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "react": "^15.3.2",
+    "react-data-grid": "^1.0.66",
     "react-dom": "^15.3.2",
     "underscore": "^1.8.3"
   },

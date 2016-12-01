@@ -23,6 +23,7 @@
     "jupyterlab": ">=0.8.0",
     "phosphor": "^0.6.1",
     "react": "^15.3.2",
+    "react-data-grid": "^1.0.66",
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
