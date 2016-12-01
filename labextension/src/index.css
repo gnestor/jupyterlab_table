@@ -1,0 +1,9 @@
+/* 
+  Copyright (c) Jupyter Development Team.
+  Distributed under the terms of the Modified BSD License. 
+*/
+
+.jp-JSONTableWidget {
+  padding: 0 10px;
+  overflow-y: scroll;
+}
