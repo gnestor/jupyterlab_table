@@ -12,7 +12,7 @@
 }
 
 .jp-DocWidgetJSONTable {
-  
+  overflow-x: scroll;
 }
 
 .jp-Output {
