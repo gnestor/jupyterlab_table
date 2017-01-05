@@ -1,0 +1,19 @@
+{
+  "name": "react-json-table",
+  "version": "1.0.0",
+  "description": "A React component for rendering JSON schema table",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jupyter",
+    "react"
+  ],
+  "author": "Grant Nestor",
+  "license": "ISC",
+  "dependencies": {
+    "fixed-data-table": "^0.6.3",
+    "react": "^15.3.2"
+  }
+}
