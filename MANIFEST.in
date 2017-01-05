@@ -1,0 +1,5 @@
+graft jupyterlab_table/static
+graft labextension/src
+graft nbextension/src
+include labextension/package.json
+include nbextension/package.json
