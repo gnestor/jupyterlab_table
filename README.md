@@ -1,8 +1,8 @@
 # jupyterlab_table
 
-A JupyterLab and Jupyter Notebook extension for rendering JSONTable data
+A JupyterLab and Jupyter Notebook extension for rendering [JSON Table Schema](http://frictionlessdata.io/guides/json-table-schema/)
 
-![output renderer](http://g.recordit.co/QAsC7YULcY.gif)
+![output renderer](http://g.recordit.co/l9WLsSxPPd.gif)
 
 ## Prerequisites
 
@@ -15,21 +15,65 @@ To render JSONTable output in IPython:
 ```python
 from jupyterlab_table import JSONTable
 
-data = {
-    'string': 'string',
-    'array': [1, 2, 3],
-    'bool': True,
-    'object': {
-        'foo': 'bar'
+JSONTable({
+  "schema": {
+    "fields": [
+      {
+        "type": "any",
+        "name": "Date"
+      },
+      {
+        "type": "number",
+        "name": "Open"
+      },
+      {
+        "type": "number",
+        "name": "High"
+      },
+      {
+        "type": "number",
+        "name": "Low"
+      },
+      {
+        "type": "number",
+        "name": "Close"
+      },
+      {
+        "type": "integer",
+        "name": "Volume"
+      },
+      {
+        "type": "number",
+        "name": "Adj Close"
+      }
+    ]
+  },
+  "data": [
+    {
+      "Date": "2000-03-01",
+      "Adj Close": 33.68,
+      "Open": 89.62,
+      "Low": 88.94,
+      "Volume": 106889800,
+      "High": 94.09,
+      "Close": 90.81
+    },
+    {
+      "Date": "2000-03-02",
+      "Adj Close": 34.63,
+      "Open": 91.81,
+      "Low": 91.12,
+      "Volume": 106932600,
+      "High": 95.37,
+      "Close": 93.37
     }
-}
-
-JSONTable(data)
+  ]
+})
 ```
 
 To render a .table.json file as a tree, simply open it:
 
-![file renderer](http://g.recordit.co/cbf0xnQHKn.gif)
+![file renderer](http://g.recordit.co/7BNlGqlKtP.gif)
 
 ## Install
 

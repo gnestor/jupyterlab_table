@@ -2,7 +2,7 @@
   "private": true,
   "name": "jupyterlab_table_labextension",
   "version": "0.1.0",
-  "description": "A JupyterLab extension for rendering JSONTable",
+  "description": "A JupyterLab extension for rendering JSON Table Schema",
   "author": "Grant Nestor",
   "main": "lib/plugin.js",
   "keywords": [

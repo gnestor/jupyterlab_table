@@ -1,7 +1,7 @@
 {
   "name": "jupyterlab_table_nbextension",
   "version": "0.0.1",
-  "description": "A Jupyter Notebook extension for rendering JSONTable",
+  "description": "A Jupyter Notebook extension for rendering JSON Table Schema",
   "author": "Grant Nestor",
   "main": "lib/index.js",
   "keywords": [
