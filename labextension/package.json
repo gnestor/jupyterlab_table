@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "build": "node build_extension.js",
-    "watch": "watch \"npm run build\" src ../component --wait 10 --ignoreDotFiles",
+    "watch": "watch \"npm install\" src ../component --wait 10 --ignoreDotFiles",
+    "preinstall": "npm install ../component",
     "prepublish": "npm run build",
     "extension:install": "jupyter labextension install --symlink --py --sys-prefix jupyterlab_table",
     "extension:uninstall": "jupyter labextension uninstall --py --sys-prefix jupyterlab_table",
@@ -20,6 +21,7 @@
     "extension:disable": "jupyter labextension disable --py --sys-prefix jupyterlab_table"
   },
   "dependencies": {
+    "fixed-data-table": "^0.6.3",
     "jupyterlab": ">=0.11.0",
     "phosphor": "^0.7.0",
     "react": "^15.3.2",

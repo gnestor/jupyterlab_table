@@ -1,7 +1,7 @@
 import { Widget } from 'phosphor/lib/ui/widget';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import JSONTable from '../component';
+import JSONTable from 'react-json-table';
 
 /**
  * The class name added to this OutputWidget.
@@ -39,7 +39,7 @@ export class OutputWidget extends Widget {
    */
   _render() {
     let json = this._source;
-    ReactDOM.render(<JSONTable data={json} />, this.node);
+    ReactDOM.render(<JSONTable {...json} />, this.node);
   }
 
 }

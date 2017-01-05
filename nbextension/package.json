@@ -12,6 +12,7 @@
   "scripts": {
     "build": "webpack",
     "watch": "watch \"npm run build\" src ../component --wait 10 --ignoreDotFiles",
+    "preinstall": "npm install ../component",
     "prepublish": "npm run build",
     "extension:install": "jupyter nbextension install --symlink --py --sys-prefix notebook_json",
     "extension:uninstall": "jupyter nbextension uninstall --py --sys-prefix notebook_json",
@@ -19,6 +20,7 @@
     "extension:disable": "jupyter nbextension disable --py --sys-prefix notebook_json"
   },
   "dependencies": {
+    "fixed-data-table": "^0.6.3",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "underscore": "^1.8.3"

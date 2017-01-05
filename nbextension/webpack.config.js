@@ -1,19 +1,15 @@
 var version = require('./package.json').version;
+var path = require('path');
 
 // Custom webpack loaders are generally the same for all webpack bundles, hence
 // stored in a separate local variable.
 var loaders = [
   {
     test: /\.js$/,
-    exclude: /node_modules/,
+    exclude: /node_modules(?!\/react-json-table)/,
     loader: 'babel-loader',
     query: {
-      // presets: ['latest', 'stage-0', 'react']
-      presets: [
-        require.resolve('babel-preset-latest'),
-        require.resolve('babel-preset-stage-0'),
-        require.resolve('babel-preset-react')
-      ]
+      presets: ['latest', 'stage-0', 'react']
     }
   }, {
     test: /\.json$/,
@@ -85,13 +81,6 @@ module.exports = [
     devtool: 'source-map',
     module: {
       loaders: loaders,
-    },
-    resolve: {
-      root: [path.resolve('.'), path.resolve('../component')],
-      fallback: path.resolve('node_modules')
-    },
-    resolveLoader: {
-      root: [path.resolve('node_modules')]
     }
   },
   // Embeddable jupyterlab_table bundle

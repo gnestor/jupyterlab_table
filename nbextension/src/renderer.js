@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import JSONTable from '../component';
+import JSONTable from 'react-json-table';
 import './index.css';
 
 const MIME_TYPE = 'application/table-schema+json';
@@ -10,7 +10,7 @@ const CLASS_NAME = 'output_JSONTable rendered_html';
 // Render data to the output area
 // 
 function render(data, node) {
-    ReactDOM.render(<JSONTable data={data} />, node);
+    ReactDOM.render(<JSONTable {...data} />, node);
 }
 
 //
