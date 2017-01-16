@@ -5,7 +5,10 @@ import {
   Cell
 } from 'fixed-data-table';
 import 'fixed-data-table/dist/fixed-data-table.min.css';
-import { infer } from 'jsontableschema';
+// hack: `stream.Transform` (stream-browserify) is undefined in `csv-parse` when 
+// built with @jupyterlabextension-builder 
+// import infer from 'jsontableschema/lib/infer';
+import infer from 'jsontableschema/lib/infer';
 import './index.css';
 
 const ROW_HEIGHT = 34;
