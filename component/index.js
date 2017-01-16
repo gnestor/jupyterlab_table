@@ -5,9 +5,16 @@ import {
   Cell
 } from 'fixed-data-table';
 import 'fixed-data-table/dist/fixed-data-table.min.css';
+import { infer } from 'jsontableschema';
 import './index.css';
 
 const ROW_HEIGHT = 34;
+
+function inferSchema(data) {
+  const headers = data.reduce((result, row) => [...new Set([...result, ...Object.keys(row)])], []);
+  const values = data.map(row => Object.values(row));
+  return infer(headers, values);
+}
 
 export default class JSONTable extends React.Component {
     
@@ -16,7 +23,8 @@ export default class JSONTable extends React.Component {
   }
 
   render() {
-    const { schema, data, ...options } = this.props;
+    let { resources: [ { schema, data, ...options }] } = this.props;
+    if (!schema) schema = inferSchema(data);
     return (
       <Table
         rowHeight={ROW_HEIGHT}
@@ -35,7 +43,7 @@ export default class JSONTable extends React.Component {
         {...options}
       >
         {
-            schema.fields.map((field, fieldIndex) =>
+          schema.fields.map((field, fieldIndex) =>
             <Column
               key={fieldIndex}
               columnKey={field.name}

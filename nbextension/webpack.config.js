@@ -61,6 +61,9 @@ module.exports = [
     module: {
       loaders: loaders,
     },
+    node: {
+      fs: 'empty'
+    },
     externals: [
       'nbextensions/jupyterlab_table/index',
       'jquery'
@@ -81,6 +84,9 @@ module.exports = [
     devtool: 'source-map',
     module: {
       loaders: loaders,
+    },
+    node: {
+      fs: 'empty'
     }
   },
   // Embeddable jupyterlab_table bundle

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import JSONTable from 'react-json-table';
 import './index.css';
 
-const MIME_TYPE = 'application/table-schema+json';
+const MIME_TYPE = 'application/vnd.dataresource+json';
 const CLASS_NAME = 'output_JSONTable rendered_html';
 
 //
@@ -19,7 +19,7 @@ function render(data, node) {
 export function register_renderer($) {
   // Get an instance of the OutputArea object from the first CodeCellebook_
   const OutputArea = $('#notebook-container').find('.code_cell').eq(0).data('cell').output_area;
-  // A function to render output of 'application/table-schema+json' mime type
+  // A function to render output of 'application/vnd.dataresource+json' mime type
   const append_mime = function(json, md, element) {
     const type = MIME_TYPE;
     const toinsert = this.create_output_subarea(md, CLASS_NAME, type);
@@ -45,13 +45,13 @@ export function register_renderer($) {
 }
 
 //
-// Re-render cells with output data of 'application/table-schema+json' mime type
+// Re-render cells with output data of 'application/vnd.dataresource+json' mime type
 // 
 export function render_cells($) {
   // Get all cells in notebook
   $('#notebook-container').find('.cell').toArray().forEach(item => {
     const CodeCell = $(item).data('cell');
-    // If a cell has output data of 'application/table-schema+json' mime type
+    // If a cell has output data of 'application/vnd.dataresource+json' mime type
     if (CodeCell.output_area && CodeCell.output_area.outputs.find(output => output.data[MIME_TYPE])) {
       // Re-render the cell by executing it
       CodeCell.notebook.render_cell_output(CodeCell);

@@ -22,7 +22,7 @@ function activatePlugin(app, rendermime, registry) {
   /**
    * Add the renderer to the registry of renderers.
    */
-  rendermime.addRenderer('application/table-schema+json', new OutputRenderer(), index);
+  rendermime.addRenderer('application/vnd.dataresource+json', new OutputRenderer(), index);
   
   /**
    * Set the extensions associated with JSONTable.

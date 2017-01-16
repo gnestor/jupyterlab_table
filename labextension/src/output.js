@@ -50,7 +50,7 @@ export class OutputRenderer {
   /**
    * The mime types this OutputRenderer accepts.
    */
-  mimetypes = ['application/table-schema+json'];
+  mimetypes = ['application/vnd.dataresource+json'];
 
   /**
    * Whether the input can safely sanitized for a given mime type.
