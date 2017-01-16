@@ -21,7 +21,6 @@
     "extension:disable": "jupyter labextension disable --py --sys-prefix jupyterlab_table"
   },
   "dependencies": {
-    "fixed-data-table": "^0.6.3",
     "jupyterlab": ">=0.11.0",
     "phosphor": "^0.7.0",
     "react": "^15.3.2",
