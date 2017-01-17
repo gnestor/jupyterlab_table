@@ -52,7 +52,7 @@ export function render_cells($) {
   $('#notebook-container').find('.cell').toArray().forEach(item => {
     const CodeCell = $(item).data('cell');
     // If a cell has output data of 'application/vnd.dataresource+json' mime type
-    if (CodeCell.output_area && CodeCell.output_area.outputs.find(output => output.data[MIME_TYPE])) {
+    if (CodeCell.output_area && CodeCell.output_area.outputs.find(output => output.data && output.data[MIME_TYPE])) {
       // Re-render the cell by executing it
       CodeCell.notebook.render_cell_output(CodeCell);
     }
