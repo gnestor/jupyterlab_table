@@ -27,7 +27,7 @@ function activatePlugin(app, rendermime, registry) {
   /**
    * Set the extensions associated with JSONTable.
    */
-  const EXTENSIONS = ['.table.json', '.json'];
+  const EXTENSIONS = ['.table.json'];
   const DEFAULT_EXTENSIONS = ['.table.json'];
 
   /**
@@ -49,7 +49,7 @@ function activatePlugin(app, rendermime, registry) {
 
 const Plugin = {
   id: 'jupyter.extensions.JSONTable',
-  requires: 'table.json' ? [IRenderMime, IDocumentRegistry] : [IRenderMime],
+  requires: [IRenderMime, IDocumentRegistry],
   activate: activatePlugin,
   autoStart: true
 };

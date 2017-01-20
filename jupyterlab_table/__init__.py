@@ -1,5 +1,5 @@
 from IPython.display import display
-import pandas
+import pandas as pd
 
 
 # Running `npm run build` will create static resources in the static
@@ -26,7 +26,7 @@ def _jupyter_nbextension_paths():
 #   JSONTable(data)
 
 def JSONTable(data, schema=None):
-    if isinstance(data, pandas.DataFrame):
+    if isinstance(data, pd.DataFrame):
         # hack until pandas supports `df.to_json(orient='json_table_schema')`
         # https://github.com/pandas-dev/pandas/pull/14904
         data = [data.loc[i].to_dict() for i in data.index]

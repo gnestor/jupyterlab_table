@@ -38,8 +38,8 @@ export class OutputWidget extends Widget {
    * A render function given the widget's DOM node.
    */
   _render() {
-    let json = this._source;
-    ReactDOM.render(<JSONTable {...json} />, this.node);
+    let { resources: [ props ] } = this._source;
+    if (props) ReactDOM.render(<JSONTable {...props} />, this.node);
   }
 
 }

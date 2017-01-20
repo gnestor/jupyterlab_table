@@ -45,8 +45,8 @@ export class DocWidget extends Widget {
     this.title.label = this._context.path.split('/').pop();
     if (this.isAttached) {
       let content = this._context.model.toString();
-      let json = content ? JSON.parse(content) : {};
-      ReactDOM.render(<JSONTable {...json} />, this.node);
+      let { resources: [ props ] } = content ? JSON.parse(content) : {};
+      if (props) ReactDOM.render(<JSONTable {...props} />, this.node);
     }
   }
 

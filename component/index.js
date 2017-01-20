@@ -26,7 +26,7 @@ export default class JSONTable extends React.Component {
   }
 
   render() {
-    let { resources: [ { schema, data, ...options }] } = this.props;
+    let { schema, data } = this.props;
     if (!schema) schema = inferSchema(data);
     return (
       <Table
@@ -43,7 +43,6 @@ export default class JSONTable extends React.Component {
             }
           }));
         }}
-        {...options}
       >
         {
           schema.fields.map((field, fieldIndex) =>
