@@ -1,6 +1,7 @@
 import { Widget } from 'phosphor/lib/ui/widget';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
 import JSONTable from 'react-json-table';
 
 /**
@@ -18,6 +19,7 @@ export class OutputWidget extends Widget {
     super();
     this.addClass(CLASS_NAME);
     this._source = options.source;
+    this._injector = options.injector;
   }
 
   /**
@@ -39,6 +41,7 @@ export class OutputWidget extends Widget {
    */
   _render() {
     let { resources: [ props ] } = this._source;
+    this._injector('text/html', ReactDOMServer.renderToStaticMarkup(<JSONTable {...props} />));
     if (props) ReactDOM.render(<JSONTable {...props} />, this.node);
   }
 
