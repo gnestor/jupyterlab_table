@@ -6,7 +6,7 @@ A JupyterLab and Jupyter Notebook extension for rendering [JSON Table Schema](ht
 
 ## Prerequisites
 
-* JupyterLab ^0.14 and/or Notebook >=4.3
+* JupyterLab ^0.15.0 and/or Notebook >=4.3.0
 
 ## Usage
 
