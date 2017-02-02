@@ -28,3 +28,12 @@
 .public_fixedDataTableRow_highlighted, .public_fixedDataTableRow_highlighted .public_fixedDataTableCell_main {
   background: #f8f8f8;
 }
+
+.dataframe {
+  width: 100%;
+  border-spacing: 1px;
+}
+
+.dataframe .header {
+  text-align: right;
+}

@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "node build_extension.js",
-    "watch": "watch \"npm install\" src ../component --wait 10 --ignoreDotFiles",
+    "watch": "watch \"npm install\" src ../component --wait 15 --ignoreDotFiles",
     "preinstall": "npm install ../component",
     "prepublish": "npm run build",
     "extension:install": "jupyter labextension install --symlink --py --sys-prefix jupyterlab_table",

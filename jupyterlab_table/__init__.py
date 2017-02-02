@@ -27,12 +27,13 @@ def _jupyter_nbextension_paths():
 #   JSONTable(data)
 
 def JSONTable(data, schema=None):
-    text = json.dumps(data, indent=4)
     if isinstance(data, pd.DataFrame):
         # hack until pandas supports `df.to_json(orient='json_table_schema')`
         # https://github.com/pandas-dev/pandas/pull/14904
         text = data.to_csv()
         data = [data.loc[i].to_dict() for i in data.index]
+    else:
+        text = json.dumps(data, indent=4)
     bundle = {
         'application/vnd.dataresource+json': {
             'resources': [

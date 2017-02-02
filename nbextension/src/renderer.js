@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import JSONTable from 'react-json-table';
+import { VirtualizedTable as JSONTable } from 'react-json-table';
 import './index.css';
 
 const MIME_TYPE = 'application/vnd.dataresource+json';

@@ -2,7 +2,7 @@ import { Widget } from 'phosphor/lib/ui/widget';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
-import JSONTable from 'react-json-table';
+import { VirtualizedTable as JSONTable } from 'react-json-table';
 
 /**
  * The class name added to this OutputWidget.
