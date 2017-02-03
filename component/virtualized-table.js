@@ -10,11 +10,16 @@ import './index.css';
 const ROW_HEIGHT = 34;
 
 function inferSchema(data) {
-  const headers = data.reduce(
-    (result, row) => [ ...new Set([ ...result, ...Object.keys(row) ]) ],
+  // Take a sampling of rows from data
+  const range = Array.from({ length: 10 }, (v, i) =>
+    Math.floor(Math.random() * data.length));
+  // Separate headers and values
+  const headers = range.reduce(
+    (result, row) => [...new Set([...result, ...Object.keys(data[row])])],
     []
   );
-  const values = data.map(row => Object.values(row));
+  const values = range.map(row => Object.values(data[row]));
+  // Infer column types and return schema for data
   return infer(headers, values);
 }
 
@@ -102,7 +107,7 @@ export default class VirtualizedTable extends React.Component {
       this.setState({ sortBy: null, sortDirection: null });
     } else {
       const { type } = this.schema.fields.find(field => field.name === sortBy);
-      this.data = [ ...this.props.data ].sort((a, b) => {
+      this.data = [...this.props.data].sort((a, b) => {
         if (type === 'date' || type === 'time' || type === 'datetime') {
           return sortDirection === SortDirection.ASC
             ? new Date(a[sortBy]) - new Date(b[sortBy])
