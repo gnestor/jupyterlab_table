@@ -1,7 +1,8 @@
 import { Widget } from 'phosphor/lib/ui/widget';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import JSONTable from 'react-json-table';
+import ReactDOMServer from 'react-dom/server';
+import { VirtualizedTable as JSONTable } from 'react-json-table';
 
 /**
  * The class name added to this OutputWidget.
@@ -18,6 +19,7 @@ export class OutputWidget extends Widget {
     super();
     this.addClass(CLASS_NAME);
     this._source = options.source;
+    this._injector = options.injector;
   }
 
   /**
@@ -38,8 +40,13 @@ export class OutputWidget extends Widget {
    * A render function given the widget's DOM node.
    */
   _render() {
-    let json = this._source;
-    ReactDOM.render(<JSONTable {...json} />, this.node);
+    let { resources: [ props ] } = this._source;
+    if (!this._injector.has('text/html')) 
+      this._injector.add(
+        'text/html', 
+        ReactDOMServer.renderToStaticMarkup(<JSONTable {...props} />)
+      );
+    if (props) ReactDOM.render(<JSONTable {...props} />, this.node);
   }
 
 }

@@ -2,7 +2,7 @@ import { Widget } from 'phosphor/lib/ui/widget';
 import { ABCWidgetFactory } from 'jupyterlab/lib/docregistry';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import JSONTable from 'react-json-table';
+import { VirtualizedTable as JSONTable } from 'react-json-table';
 
 /**
  * The class name added to this DocWidget.
@@ -45,8 +45,8 @@ export class DocWidget extends Widget {
     this.title.label = this._context.path.split('/').pop();
     if (this.isAttached) {
       let content = this._context.model.toString();
-      let json = content ? JSON.parse(content) : {};
-      ReactDOM.render(<JSONTable {...json} />, this.node);
+      let { resources: [ props ] } = content ? JSON.parse(content) : {};
+      if (props) ReactDOM.render(<JSONTable {...props} />, this.node);
     }
   }
 

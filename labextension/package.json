@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "jupyterlab_table_labextension",
-  "version": "0.1.0",
+  "version": "0.16.0",
   "description": "A JupyterLab extension for rendering JSON Table Schema",
   "author": "Grant Nestor",
   "main": "lib/plugin.js",
@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "node build_extension.js",
-    "watch": "watch \"npm install\" src ../component --wait 10 --ignoreDotFiles",
+    "watch": "watch \"npm install\" src ../component --wait 15 --ignoreDotFiles",
     "preinstall": "npm install ../component",
     "prepublish": "npm run build",
     "extension:install": "jupyter labextension install --symlink --py --sys-prefix jupyterlab_table",
@@ -21,7 +21,7 @@
     "extension:disable": "jupyter labextension disable --py --sys-prefix jupyterlab_table"
   },
   "dependencies": {
-    "jupyterlab": ">=0.11.0",
+    "jupyterlab": "^0.16.0",
     "phosphor": "^0.7.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
