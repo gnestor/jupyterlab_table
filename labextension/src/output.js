@@ -41,7 +41,11 @@ export class OutputWidget extends Widget {
    */
   _render() {
     let { resources: [ props ] } = this._source;
-    this._injector('text/html', ReactDOMServer.renderToStaticMarkup(<JSONTable {...props} />));
+    if (!this._injector.has('text/html')) 
+      this._injector.add(
+        'text/html', 
+        ReactDOMServer.renderToStaticMarkup(<JSONTable {...props} />)
+      );
     if (props) ReactDOM.render(<JSONTable {...props} />, this.node);
   }
 
