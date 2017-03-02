@@ -57,9 +57,8 @@ export class DocWidget extends Widget {
       const content = this._context.model.toString();
       try {
         const { resources: [ props ] } = JSON.parse(content);
-        ReactDOM.render(<JSONTableComponent {...props} />, this.node);
+        ReactDOM.render(<JSONTable {...props} />, this.node);
       } catch (error) {
-        
         const ErrorDisplay = props => (
           <div
             className="jp-RenderedText jp-mod-error"
