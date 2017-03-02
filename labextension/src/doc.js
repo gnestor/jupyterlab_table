@@ -3,7 +3,7 @@ import { ABCWidgetFactory } from 'jupyterlab/lib/docregistry';
 import { ActivityMonitor } from 'jupyterlab/lib/common/activitymonitor';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import JSONTableComponent from 'jupyterlab_table_react';
+import { VirtualizedTable as JSONTable } from 'jupyterlab_table_react';
 
 /**
  * The class name added to a DocWidget.
@@ -56,11 +56,8 @@ export class DocWidget extends Widget {
     if (this.isAttached) {
       const content = this._context.model.toString();
       try {
-        const data = JSON.parse(content);
-        ReactDOM.render(
-          <JSONTableComponent data={data} />,
-          this.node
-        );
+        const { resources: [ props ] } = JSON.parse(content);
+        ReactDOM.render(<JSONTableComponent {...props} />, this.node);
       } catch (error) {
         
         const ErrorDisplay = props => (

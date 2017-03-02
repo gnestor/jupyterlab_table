@@ -1,7 +1,8 @@
 import { Widget } from '@phosphor/widgets';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import JSONTableComponent from 'jupyterlab_table_react';
+import ReactDOMServer from 'react-dom/server';
+import { VirtualizedTable as JSONTable } from 'jupyterlab_table_react';
 
 /**
  * The class name added to this OutputWidget.
@@ -15,8 +16,9 @@ export class OutputWidget extends Widget {
   constructor(options) {
     super();
     this.addClass(CLASS_NAME);
-    this._data = options.model.data.get(options.mimeType);
-    this._metadata = options.model.metadata.get(options.mimeType);
+    this._data = options.model.data;
+    // this._metadata = options.model.metadata;
+    this._mimeType = options.mimeType;
   }
 
   /**
@@ -37,9 +39,12 @@ export class OutputWidget extends Widget {
    * A render function given the widget's DOM node.
    */
   _render() {
-    ReactDOM.render(
-      <JSONTableComponent data={this._data} metadata={this._metadata} />,
-      this.node
+    const { resources: [ props ] } = this._data.get(this._mimeType);
+    // const metadata = this._metadata.get(this._mimeType);
+    if (props) ReactDOM.render(<JSONTable {...props} />, this.node);
+    this._data.set(
+      'text/html', 
+      ReactDOMServer.renderToStaticMarkup(<JSONTable {...props} />)
     );
   }
 }

@@ -1,6 +1,6 @@
 # jupyterlab_table JupyterLab extension
 
-A JupyterLab extension for rendering JSONTable
+A JupyterLab extension for rendering JSON Table Schema
 
 ## Prerequisites
 

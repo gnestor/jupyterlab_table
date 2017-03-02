@@ -4,7 +4,12 @@
 */
 
 .jp-OutputWidgetJSONTable, .jp-DocWidgetJSONTable {
-  padding: 5px 0;
+  padding: 0;
+  width: 100%;
+  /*max-height: 400px;
+  overflow: hidden !important;*/
+  /*overflow-y: hidden !important;
+  overflow-x: scroll !important;*/
 }
 
 .jp-OutputWidgetJSONTable {
@@ -12,6 +17,6 @@
 }
 
 .jp-DocWidgetJSONTable {
-  padding: 5px;
+  padding: 0;
   overflow: auto;
 }

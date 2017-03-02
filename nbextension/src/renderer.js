@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import JSONTableComponent from 'jupyterlab_table_react';
+import { VirtualizedTable as JSONTable } from 'jupyterlab_table_react';
 import './index.css';
 
 const MIME_TYPE = 'application/vnd.dataresource+json';
@@ -10,7 +10,8 @@ const CLASS_NAME = 'output_JSONTable rendered_html';
  * Render data to the output area
  */
 function render(data, node) {
-    ReactDOM.render(<JSONTableComponent data={data} />, node);
+  const { resources: [ props ] } = data;
+  ReactDOM.render(<JSONTable {...props} />, node);
 }
 
 /**

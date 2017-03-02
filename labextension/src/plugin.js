@@ -31,35 +31,31 @@ function activatePlugin(app, rendermime, registry) {
     index
   );
 
-  if ('table.json') {
-    /**
-     * Set the extensions associated with JSONTable.
-     */
-    const EXTENSIONS = [ '.table.json' ];
-    const DEFAULT_EXTENSIONS = [ '.table.json' ];
+  /**
+   * Set the extensions associated with JSONTable.
+   */
+  const EXTENSIONS = ['.table.json', '.json'];
+  const DEFAULT_EXTENSIONS = ['.table.json'];
 
-    /**
-     * Add file handler for table.json files.
-     */
-    const options = {
-      fileExtensions: EXTENSIONS,
-      defaultFor: DEFAULT_EXTENSIONS,
-      name: 'JSONTable',
-      displayName: 'JSONTable',
-      modelName: 'text',
-      preferKernel: false,
-      canStartKernel: false
-    };
+  /**
+   * Add file handler for table.json files.
+   */
+  const options = {
+    fileExtensions: EXTENSIONS,
+    defaultFor: DEFAULT_EXTENSIONS,
+    name: 'JSONTable',
+    displayName: 'JSONTable',
+    modelName: 'text',
+    preferKernel: false,
+    canStartKernel: false
+  };
 
-    registry.addWidgetFactory(new DocWidgetFactory(options));
-  }
+  registry.addWidgetFactory(new DocWidgetFactory(options));
 }
 
 const Plugin = {
   id: 'jupyter.extensions.JSONTable',
-  requires: 'table.json'
-    ? [ IRenderMime, IDocumentRegistry ]
-    : [ IRenderMime ],
+  requires: [IRenderMime, IDocumentRegistry],
   activate: activatePlugin,
   autoStart: true
 };

@@ -1,14 +1,4 @@
-import React from 'react';
-import './index.css';
-
-export default class JSONTableComponent extends React.Component {
-
-  render() {
-      return (
-        <div className="JSONTable">
-          {JSON.stringify(this.props.data)}
-        </div>
-      );
-  }
-
-}
+export VirtualizedTable from './virtualized-table';
+export VirtualizedGrid from './virtualized-grid';
+export FixedDataTable from './fixed-data-table';
+export VanillaTable from './vanilla-table';
