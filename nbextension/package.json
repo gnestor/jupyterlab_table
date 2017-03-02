@@ -1,8 +1,8 @@
 {
   "name": "jupyterlab_table_nbextension",
-  "version": "0.16.0",
-  "description": "A Jupyter Notebook extension for rendering JSON Table Schema",
-  "author": "Grant Nestor",
+  "version": "0.17.0",
+  "description": "A Jupyter Notebook extension for rendering JSONTable",
+  "author": "Grant Nestor <grantnestor@gmail.com>",
   "main": "lib/index.js",
   "keywords": [
     "jupyter",
@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "webpack",
-    "watch": "watch \"npm run build\" src ../component --wait 10 --ignoreDotFiles",
+    "watch": "watch \"npm install\" src ../component --wait 10 --ignoreDotFiles",
     "preinstall": "npm install ../component",
     "prepublish": "npm run build",
     "extension:install": "jupyter nbextension install --symlink --py --sys-prefix notebook_json",

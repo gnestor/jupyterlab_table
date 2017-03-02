@@ -1,10 +1,10 @@
 # jupyterlab_table Jupyter Notebook extension
 
-A Jupyter Notebook extension for rendering JSON Table Schema
+A Jupyter Notebook extension for rendering JSONTable
 
 ## Prerequisites
 
-* `notebook>=4.3`
+* `notebook@>=4.3.0`
 
 ## Development
 

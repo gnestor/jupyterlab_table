@@ -1,7 +1,7 @@
 {
-  "name": "react-json-table",
+  "name": "jupyterlab_table_react",
   "version": "1.0.0",
-  "description": "A React component for rendering JSON schema table",
+  "description": "A React component for rendering JSONTable",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,13 +10,9 @@
     "jupyter",
     "react"
   ],
-  "author": "Grant Nestor",
+  "author": "Grant Nestor <grantnestor@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "fixed-data-table": "^0.6.3",
-    "jsontableschema": "^0.2.2",
-    "react": "^15.3.2",
-    "react-addons-shallow-compare": "^15.4.2",
-    "react-virtualized": "^8.11.4"
+    "react": "^15.3.2"
   }
 }

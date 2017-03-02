@@ -1,25 +1,22 @@
-import { Widget } from 'phosphor/lib/ui/widget';
+import { Widget } from '@phosphor/widgets';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactDOMServer from 'react-dom/server';
-import { VirtualizedTable as JSONTable } from 'react-json-table';
+import JSONTableComponent from 'jupyterlab_table_react';
 
 /**
  * The class name added to this OutputWidget.
  */
 const CLASS_NAME = 'jp-OutputWidgetJSONTable';
 
-
 /**
  * A widget for rendering JSONTable.
  */
 export class OutputWidget extends Widget {
-
   constructor(options) {
     super();
     this.addClass(CLASS_NAME);
-    this._source = options.source;
-    this._injector = options.injector;
+    this._data = options.model.data.get(options.mimeType);
+    this._metadata = options.model.metadata.get(options.mimeType);
   }
 
   /**
@@ -40,37 +37,24 @@ export class OutputWidget extends Widget {
    * A render function given the widget's DOM node.
    */
   _render() {
-    let { resources: [ props ] } = this._source;
-    if (!this._injector.has('text/html')) 
-      this._injector.add(
-        'text/html', 
-        ReactDOMServer.renderToStaticMarkup(<JSONTable {...props} />)
-      );
-    if (props) ReactDOM.render(<JSONTable {...props} />, this.node);
+    ReactDOM.render(
+      <JSONTableComponent data={this._data} metadata={this._metadata} />,
+      this.node
+    );
   }
-
 }
 
-
 export class OutputRenderer {
-
   /**
    * The mime types this OutputRenderer accepts.
    */
-  mimetypes = ['application/vnd.dataresource+json'];
+  mimeTypes = [ 'application/vnd.dataresource+json' ];
 
   /**
-   * Whether the input can safely sanitized for a given mime type.
+   * Whether the renderer can render given the render options.
    */
-  isSanitizable(mimetype) {
-    return this.mimetypes.indexOf(mimetype) !== -1;
-  }
-
-  /**
-   * Whether the input is safe without sanitization.
-   */
-  isSafe(mimetype) {
-    return false;
+  canRender(options) {
+    return this.mimeTypes.indexOf(options.mimeType) !== -1;
   }
 
   /**
@@ -79,5 +63,4 @@ export class OutputRenderer {
   render(options) {
     return new OutputWidget(options);
   }
-
 }

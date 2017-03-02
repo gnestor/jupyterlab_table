@@ -4,15 +4,16 @@ This document guides an extension maintainer through creating and publishing a r
 
 ## Update version number
 
-Update the version number in `setup.py` and in `package.json`.
+Update the version number in `setup.py`, `labextension/package.json`, and `nbextension/package.json`.
+
+Commit your changes, add git tag for this version, and push both commit and tag to your origin/remote repo.
 
 ## Remove generated files
 
-Remove old Javascript bundle builds and delete the `dist/` folder to remove old Python package builds:
+Remove old Javascript bundle and Python package builds:
 
 ```bash
-npm run clean
-rm -rf dist/
+git clean -xfd
 ```
 
 ## Build the package
@@ -20,7 +21,7 @@ rm -rf dist/
 Build the Javascript extension bundle, then build the Python package and wheel:
 
 ```bash
-npm run build
+bash build.js
 python setup.py sdist
 python setup.py bdist_wheel --universal
 ```

@@ -1,4 +1,4 @@
-div.output_subarea .output_JSONTable {
+div.output_subarea.output_JSONTable {
   padding: 0.4em 0;
   max-width: 100%;
 }

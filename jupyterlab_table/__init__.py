@@ -1,5 +1,4 @@
-from IPython.display import display
-import pandas as pd
+from IPython.display import display, JSON
 import json
 
 
@@ -22,28 +21,27 @@ def _jupyter_nbextension_paths():
     }]
 
 
-# A display function that can be used within a notebook. E.g.:
+# A display class that can be used within a notebook. E.g.:
 #   from jupyterlab_table import JSONTable
 #   JSONTable(data)
+    
+class JSONTable(JSON):
+    """A display class for displaying JSONTable visualizations in the Jupyter Notebook and IPython kernel.
+    
+    JSONTable expects a JSON-able dict, not serialized JSON strings.
 
-def JSONTable(data, schema=None):
-    if isinstance(data, pd.DataFrame):
-        # hack until pandas supports `df.to_json(orient='json_table_schema')`
-        # https://github.com/pandas-dev/pandas/pull/14904
-        text = data.to_csv()
-        data = [data.loc[i].to_dict() for i in data.index]
-    else:
-        text = json.dumps(data, indent=4)
-    bundle = {
-        'application/vnd.dataresource+json': {
-            'resources': [
-                {
-                    'schema': schema,
-                    'data': data
-                }
-            ]
-        },
-        'application/json': data,
-        'text/plain': text
-    }
-    display(bundle, raw=True)
+    Scalar types (None, number, string) are not allowed, only dict containers.
+    """
+
+    def _data_and_metadata(self):
+        return self.data, self.metadata
+    
+    def _ipython_display_(self):
+        bundle = {
+            'application/vnd.dataresource+json': self.data,
+            'text/plain': '<jupyterlab_table.JSONTable object>'
+        }
+        metadata = {
+            'application/vnd.dataresource+json': self.metadata
+        }
+        display(bundle, metadata=metadata, raw=True) 

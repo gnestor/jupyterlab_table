@@ -1,9 +1,9 @@
 {
   "private": true,
   "name": "jupyterlab_table_labextension",
-  "version": "0.16.0",
-  "description": "A JupyterLab extension for rendering JSON Table Schema",
-  "author": "Grant Nestor",
+  "version": "0.17.0",
+  "description": "A JupyterLab extension for rendering JSONTable",
+  "author": "Grant Nestor <grantnestor@gmail.com>",
   "main": "lib/plugin.js",
   "keywords": [
     "jupyter",
@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "node build_extension.js",
-    "watch": "watch \"npm install\" src ../component --wait 15 --ignoreDotFiles",
+    "watch": "watch \"npm install\" src ../component --wait 10 --ignoreDotFiles",
     "preinstall": "npm install ../component",
     "prepublish": "npm run build",
     "extension:install": "jupyter labextension install --symlink --py --sys-prefix jupyterlab_table",
@@ -21,20 +21,19 @@
     "extension:disable": "jupyter labextension disable --py --sys-prefix jupyterlab_table"
   },
   "dependencies": {
-    "jupyterlab": "^0.16.0",
-    "phosphor": "^0.7.0",
+    "jupyterlab": "^0.17.0",
+    "@phosphor/algorithm": "^0.1.0",
+    "@phosphor/widgets": "^0.1.3",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
     "@jupyterlab/extension-builder": ">=0.10.0",
-    "@jupyterlab/services": ">=0.25.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
-    "rimraf": "^2.5.4",
     "watch": "^1.0.1"
   }
 }
