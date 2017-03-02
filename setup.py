@@ -22,14 +22,14 @@ if not os.path.exists('labextension/node_modules') and not os.path.exists('nbext
 
 setup_args = dict(
     name                 = 'jupyterlab_table',
-    version              = '0.1.0',
+    version              = '0.17.0',
     packages             = ['jupyterlab_table'],
     author               = 'Grant Nestor',
     author_email         = 'grantnestor@gmail.com',
     keywords             = ['jupyter', 'jupyterlab', 'labextension', 'notebook', 'nbextension'],
     include_package_data = True,
     install_requires = [
-        'jupyterlab>=0.16.0',
+        'jupyterlab>=0.17.0',
         'ipython>=1.0.0',
         'pandas>=0.1.0'
     ]

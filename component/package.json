@@ -1,5 +1,5 @@
 {
-  "name": "react-json-table",
+  "name": "jupyterlab_table_react",
   "version": "1.0.0",
   "description": "A React component for rendering JSON schema table",
   "main": "index.js",

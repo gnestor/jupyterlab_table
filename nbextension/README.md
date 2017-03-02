@@ -4,7 +4,7 @@ A Jupyter Notebook extension for rendering JSON Table Schema
 
 ## Prerequisites
 
-* `notebook>=4.3`
+* `notebook@>=4.3.0`
 
 ## Development
 

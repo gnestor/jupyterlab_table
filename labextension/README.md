@@ -4,9 +4,7 @@ A JupyterLab extension for rendering JSON Table Schema
 
 ## Prerequisites
 
-* `jupyterlab>=0.11`
-
-![file renderer](http://g.recordit.co/cbf0xnQHKn.gif)
+* `jupyterlab@^0.17.0`
 
 ## Development
 
