@@ -89,12 +89,7 @@ class JSONTable(DisplayObject):
     def _ipython_display_(self):
         bundle = {
             'application/vnd.dataresource+json': {
-                'resources': [
-                    {
-                        'schema': self.schema,
-                        'data': prepare_data(self.data)
-                    }
-                ]
+                'resources': [prepare_data(self.data, self.schema)]
             },
             'text/plain': '<jupyterlab_table.JSONTable object>'
         }

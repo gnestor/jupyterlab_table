@@ -2,6 +2,7 @@ import cgi
 import codecs
 import collections
 import os.path
+import json
 import pandas as pd
 
 
@@ -72,10 +73,14 @@ def sanitize_dataframe(df):
     return df
 
 
-def prepare_data(data=None):
-    """Prepare Plotly data from Pandas DataFrame."""
+def prepare_data(data=None, schema=None):
+    """Prepare JSONTable data from Pandas DataFrame."""
     
-    if isinstance(data, list):
-        return data
-    data = sanitize_dataframe(data)
-    return data.to_dict(orient='records')
+    if isinstance(data, pd.DataFrame):
+        data = sanitize_dataframe(data)
+        data = data.to_json(orient='table')
+        return json.loads(data)
+    return {
+        'data': data,
+        'schema': schema
+    }
