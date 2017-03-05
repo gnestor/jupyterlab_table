@@ -10,9 +10,9 @@ const CLASS_NAME = 'output_JSONTable rendered_html';
 /**
  * Render data to the output area
  */
-function render(data, node) {
-  const { resources: [ props ] } = data;
-  ReactDOM.render(<JSONTable {...props} />, node);
+function render(json, node) {
+  const { data, schema } = json;
+  ReactDOM.render(<JSONTable data={data} schema={schema} />, node);
 }
 
 /**

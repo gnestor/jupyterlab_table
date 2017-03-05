@@ -39,13 +39,13 @@ export class OutputWidget extends Widget {
    * A render function given the widget's DOM node.
    */
   _render() {
-    const { resources: [ props ] } = this._data.get(this._mimeType);
+    const { data, schema } = this._data.get(this._mimeType);
     // const metadata = this._metadata.get(this._mimeType);
-    if (props) ReactDOM.render(<JSONTable {...props} />, this.node);
-    // Inject static HTML into mime bundle
+    // if (data) 
+    ReactDOM.render(<JSONTable data={data} schema={schema} />, this.node);
     this._data.set(
       'text/html', 
-      ReactDOMServer.renderToStaticMarkup(<JSONTable {...props} />)
+      ReactDOMServer.renderToStaticMarkup(<JSONTable data={data} schema={schema} />)
     );
   }
 }
