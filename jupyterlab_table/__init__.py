@@ -1,7 +1,6 @@
 from IPython.display import display, DisplayObject
 import json
 import pandas as pd
-from .utils import prepare_data
 
 
 # Running `npm run build` will create static resources in the static
@@ -22,6 +21,16 @@ def _jupyter_nbextension_paths():
         'require': 'jupyterlab_table/extension'
     }]
 
+def prepare_data(data=None, schema=None):
+    """Prepare JSONTable data from Pandas DataFrame."""
+    
+    if isinstance(data, pd.DataFrame):
+        data = data.to_json(orient='table')
+        return json.loads(data)
+    return {
+        'data': data,
+        'schema': schema
+    }
 
 # A display class that can be used within a notebook. E.g.:
 #   from jupyterlab_table import JSONTable
@@ -88,9 +97,7 @@ class JSONTable(DisplayObject):
         
     def _ipython_display_(self):
         bundle = {
-            'application/vnd.dataresource+json': {
-                'resources': [prepare_data(self.data, self.schema)]
-            },
+            'application/vnd.dataresource+json': prepare_data(self.data, self.schema),
             'text/plain': '<jupyterlab_table.JSONTable object>'
         }
         metadata = {
