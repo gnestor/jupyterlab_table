@@ -42,6 +42,7 @@ export class OutputWidget extends Widget {
     const { resources: [ props ] } = this._data.get(this._mimeType);
     // const metadata = this._metadata.get(this._mimeType);
     if (props) ReactDOM.render(<JSONTable {...props} />, this.node);
+    // Inject static HTML into mime bundle
     this._data.set(
       'text/html', 
       ReactDOMServer.renderToStaticMarkup(<JSONTable {...props} />)
