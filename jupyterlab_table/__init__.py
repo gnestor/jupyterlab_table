@@ -2,6 +2,9 @@ from IPython.display import display, DisplayObject
 import json
 import pandas as pd
 
+pd.options.display.html.table_schema = True
+pd.options.display.max_rows = 10000
+
 
 # Running `npm run build` will create static resources in the static
 # directory of this Python package (and create that directory if necessary).
