@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
 import { VirtualizedTable as JSONTable } from 'jupyterlab_table_react';
 import './index.css';
 
@@ -28,7 +29,14 @@ export function register_renderer(notebook) {
     const type = MIME_TYPE;
     const toinsert = this.create_output_subarea(md, CLASS_NAME, type);
     this.keyboard_manager.register_events(toinsert);
-    render(json, toinsert[(0)]);
+    render(json, toinsert[0]);
+    // Inject static HTML into mime bundle
+    this.outputs.filter(output => output.data[MIME_TYPE]).forEach(output => {
+      const { resources: [ props ] } = json;
+      ReactDOMServer.renderToStaticMarkup(
+        <JSONTable {...props} />
+      )
+    });
     element.append(toinsert);
     return toinsert;
   };
