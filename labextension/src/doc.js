@@ -56,8 +56,8 @@ export class DocWidget extends Widget {
     if (this.isAttached) {
       const content = this._context.model.toString();
       try {
-        const { resources: [ props ] } = JSON.parse(content);
-        ReactDOM.render(<JSONTable {...props} />, this.node);
+        const { data, schema } = JSON.parse(content);
+        ReactDOM.render(<JSONTable data={data} schema={schema} />, this.node);
       } catch (error) {
         const ErrorDisplay = props => (
           <div

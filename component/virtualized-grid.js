@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, MultiGrid, AutoSizer, CellMeasurer } from 'react-virtualized';
+import ReactDOM from 'react-dom';
+import { MultiGrid, AutoSizer, CellMeasurer } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 // hack: `stream.Transform` (stream-browserify) is undefined in `csv-parse` when
 // built with @jupyterlabextension-builder
@@ -7,14 +8,20 @@ import infer from 'jsontableschema/lib/infer';
 // import { infer } from 'jsontableschema';
 import './index.css';
 
-const ROW_HEIGHT = 34;
+const ROW_HEIGHT = 42;
+const GRID_MAX_HEIGHT = 336;
 
 function inferSchema(data) {
-  const headers = data.reduce(
-    (result, row) => [ ...new Set([ ...result, ...Object.keys(row) ]) ],
+  // Take a sampling of rows from data
+  const range = Array.from({ length: 10 }, (v, i) =>
+    Math.floor(Math.random() * data.length));
+  // Separate headers and values
+  const headers = range.reduce(
+    (result, row) => [...new Set([...result, ...Object.keys(data[row])])],
     []
   );
-  const values = data.map(row => Object.values(row));
+  const values = range.map(row => Object.values(data[row]));
+  // Infer column types and return schema for data
   return infer(headers, values);
 }
 
@@ -32,6 +39,8 @@ export default class VirtualizedGrid extends React.Component {
   }
 
   render() {
+    const rowCount = this.data.length + 1
+    const height = rowCount * ROW_HEIGHT;
     return (
       <AutoSizer disableHeight>
         {({ width }) => (
@@ -39,20 +48,21 @@ export default class VirtualizedGrid extends React.Component {
             cellRenderer={this.cellRenderer}
             columnCount={this.schema.fields.length}
             height={ROW_HEIGHT}
-            rowCount={this.data.length + 1}
+            rowCount={rowCount}
           >
             {({ getColumnWidth }) => (
               <MultiGrid
                 cellRenderer={this.cellRenderer}
                 columnCount={this.schema.fields.length}
-                columnWidth={getColumnWidth}
+                columnWidth={index => getColumnWidth(index) + 10}
+                fixedColumnCount={1}
                 fixedRowCount={1}
                 height={
-                  (this.data.length + 1) * (ROW_HEIGHT + 8) < 400
-                    ? (this.data.length + 1) * (ROW_HEIGHT + 8)
-                    : 400
+                  height < GRID_MAX_HEIGHT
+                    ? height
+                    : GRID_MAX_HEIGHT
                 }
-                rowCount={this.data.length + 1}
+                rowCount={rowCount}
                 rowHeight={ROW_HEIGHT}
                 width={width}
               />
@@ -70,13 +80,13 @@ export default class VirtualizedGrid extends React.Component {
         style={{
           ...style,
           fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-          fontSize: 16,
+          fontSize: 12,
           fontWeight: rowIndex === 0 ? 600 : 'normal',
           backgroundColor: rowIndex % 2 === 0 && rowIndex !== 0
             ? '#f8f8f8'
             : '#fff',
-          border: '1px solid #ddd',
-          padding: '6px 13px'
+          padding: '6px 13px',
+          boxSizing: 'border-box'
         }}
       >
         {
