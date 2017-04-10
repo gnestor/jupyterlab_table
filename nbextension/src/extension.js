@@ -24,11 +24,14 @@ export function load_ipython_extension() {
   define(
     [
       'nbextensions/jupyterlab_table/index',
-      'base/js/namespace'
+      'base/js/namespace',
+      'base/js/events',
+      'notebook/js/outputarea'
     ],
-    (Extension, Jupyter) => {
+    (Extension, Jupyter, events, outputarea) => {
       const { notebook } = Jupyter;
-      Extension.register_renderer(notebook);
+      const { OutputArea } = outputarea;
+      Extension.register_renderer(notebook, events, OutputArea);
       Extension.render_cells(notebook);
     }
   );
