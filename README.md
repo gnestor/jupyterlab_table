@@ -2,7 +2,7 @@
 
 A JupyterLab and Jupyter Notebook extension for rendering [JSON Table Schema](http://frictionlessdata.io/guides/json-table-schema/)
 
-![output renderer](http://g.recordit.co/l9WLsSxPPd.gif)
+![output renderer](http://g.recordit.co/X8XNLpKs21.gif)
 
 ## Prerequisites
 
@@ -81,7 +81,7 @@ JSONTable(df)
 
 To render a .table.json file as a tree, simply open it:
 
-![file renderer](http://g.recordit.co/7BNlGqlKtP.gif)
+![file renderer](http://g.recordit.co/3Lbf119uA1.gif)
 
 ## Install
 
