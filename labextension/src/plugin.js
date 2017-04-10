@@ -34,7 +34,18 @@ function activatePlugin(app, rendermime, registry, restorer) {
   const index = 0;
 
   /**
-   * Add the renderer to the registry of renderers.
+   * Add output renderer for application/vnd.tableschema+json data
+   */
+  rendermime.addRenderer(
+    {
+      mimeType: 'application/vnd.tableschema+json',
+      renderer: new OutputRenderer()
+    },
+    index
+  );
+  
+  /**
+   * Add output renderer for application/vnd.dataresource+json data
    */
   rendermime.addRenderer(
     {
