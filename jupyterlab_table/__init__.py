@@ -1,12 +1,10 @@
 from IPython.display import display, DisplayObject
 import json
 import pandas as pd
-from .utils import prepare_data
 
 
 # Running `npm run build` will create static resources in the static
 # directory of this Python package (and create that directory if necessary).
-
 
 def _jupyter_labextension_paths():
     return [{
@@ -22,6 +20,16 @@ def _jupyter_nbextension_paths():
         'require': 'jupyterlab_table/extension'
     }]
 
+def prepare_data(data=None, schema=None):
+    """Prepare JSONTable data from Pandas DataFrame."""
+    
+    if isinstance(data, pd.DataFrame):
+        data = data.to_json(orient='table')
+        return json.loads(data)
+    return {
+        'data': data,
+        'schema': schema
+    }
 
 # A display class that can be used within a notebook. E.g.:
 #   from jupyterlab_table import JSONTable
@@ -88,17 +96,80 @@ class JSONTable(DisplayObject):
         
     def _ipython_display_(self):
         bundle = {
-            'application/vnd.dataresource+json': {
-                'resources': [
-                    {
-                        'schema': self.schema,
-                        'data': prepare_data(self.data)
-                    }
-                ]
-            },
+            'application/vnd.dataresource+json': prepare_data(self.data, self.schema),
             'text/plain': '<jupyterlab_table.JSONTable object>'
         }
         metadata = {
             'application/vnd.dataresource+json': self.metadata
         }
         display(bundle, metadata=metadata, raw=True) 
+        
+class Grid(JSONTable):
+    def __init__(self, data=None, schema=None, url=None, filename=None, metadata=None):
+            """Create a JSON Table display object given raw data.
+
+            Parameters
+            ----------
+            data : list
+                Not an already-serialized JSON string.
+                Scalar types (None, number, string) are not allowed, only list containers.
+            schema : dict
+                JSON Table Schema. See http://frictionlessdata.io/guides/json-table-schema/.
+            url : unicode
+                A URL to download the data from.
+            filename : unicode
+                Path to a local file to load the data from.
+            metadata: dict
+                Specify extra metadata to attach to the json display object.
+            """
+            self.schema = schema
+            self.metadata = metadata
+            super(JSONTable, self).__init__(data=data, url=url, filename=filename)
+
+    def _ipython_display_(self):
+            metadata = {'format': 'grid'}
+            if self.metadata:
+                metadata.update(self.metadata)
+            bundle = {
+                'application/vnd.dataresource+json': prepare_data(self.data, self.schema),
+                'text/plain': '<jupyterlab_table.JSONTable object>'
+            }
+            metadata = {
+                'application/vnd.dataresource+json': metadata
+            }
+            display(bundle, metadata=metadata, raw=True) 
+            
+class Table(JSONTable):
+    def __init__(self, data=None, schema=None, url=None, filename=None, metadata=None):
+            """Create a JSON Table display object given raw data.
+
+            Parameters
+            ----------
+            data : list
+                Not an already-serialized JSON string.
+                Scalar types (None, number, string) are not allowed, only list containers.
+            schema : dict
+                JSON Table Schema. See http://frictionlessdata.io/guides/json-table-schema/.
+            url : unicode
+                A URL to download the data from.
+            filename : unicode
+                Path to a local file to load the data from.
+            metadata: dict
+                Specify extra metadata to attach to the json display object.
+            """
+            self.schema = schema
+            self.metadata = metadata
+            super(JSONTable, self).__init__(data=data, url=url, filename=filename)
+
+    def _ipython_display_(self):
+            metadata = {'format': 'table'}
+            if self.metadata:
+                metadata.update(self.metadata)
+            bundle = {
+                'application/vnd.dataresource+json': prepare_data(self.data, self.schema),
+                'text/plain': '<jupyterlab_table.JSONTable object>'
+            }
+            metadata = {
+                'application/vnd.dataresource+json': metadata
+            }
+            display(bundle, metadata=metadata, raw=True) 
