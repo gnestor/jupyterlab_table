@@ -4,14 +4,35 @@
 */
 
 .jp-OutputWidgetJSONTable, .jp-DocWidgetJSONTable {
-  padding: 5px 0;
+  width: 100%;
+  padding: 0;
 }
 
 .jp-OutputWidgetJSONTable {
-  
+  padding-top: 5px;
+  height: 360px;
 }
 
 .jp-DocWidgetJSONTable {
-  padding: 5px;
   overflow: auto;
+}
+
+.jp-DocWidgetJSONTable .jp-mod-error {
+  width: 100%;
+  min-height: 100%;
+  text-align: center; 
+  padding: 10px; 
+  box-sizing: border-box;
+}
+
+.jp-DocWidgetJSONTable .jp-mod-error h2 {
+  font-size: 18px; 
+  font-weight: 500; 
+  padding-bottom: 10px;
+}
+
+.jp-DocWidgetJSONTable .jp-mod-error pre {
+  text-align: left; 
+  padding: 10px; 
+  overflow: hidden;
 }

@@ -1,10 +1,10 @@
-# jupyterlab_table JupyterLab extension
+# labextension
 
 A JupyterLab extension for rendering JSONTable
 
 ## Prerequisites
 
-* `jupyterlab@^0.17.0`
+* `jupyterlab@^0.18.0`
 
 ## Development
 
@@ -24,4 +24,17 @@ Watch `/src` directory and re-build on changes:
 
 ```bash
 npm run watch
+```
+
+Manage extension
+
+```bash
+# Install
+npm run extension:install
+# Enable
+npm run extension:enable
+# Disable
+npm run extension:disable
+# Uninstall
+npm run extension:uninstall
 ```

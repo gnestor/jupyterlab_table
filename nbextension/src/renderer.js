@@ -5,44 +5,103 @@ import './index.css';
 
 const MIME_TYPE = 'application/vnd.dataresource+json';
 const CLASS_NAME = 'output_JSONTable rendered_html';
+const DEFAULT_WIDTH = 840;
+const DEFAULT_HEIGHT = 360;
 
 /**
- * Render data to the output area
+ * Render data to the DOM node
  */
-function render(data, node) {
-    ReactDOM.render(<JSONTableComponent data={data} />, node);
+function render(props, node) {
+  ReactDOM.render(<JSONTableComponent {...props} />, node);
 }
 
 /**
- * Register the mime type and append_mime_type function with the notebook's 
- * output_area
+ * Handle when an output is cleared or removed
  */
-export function register_renderer(notebook) {
-  // Get an instance of output_area from the notebook object
-  const { output_area } = notebook
-    .get_cells()
-    .reduce((result, cell) => cell.output_area ? cell : result, {});
-  // A function to render output of 'application/vnd.dataresource+json' mime type
-  const append_mime = function(json, md, element) {
-    const type = MIME_TYPE;
-    const toinsert = this.create_output_subarea(md, CLASS_NAME, type);
+function handleClearOutput(event, { cell: { output_area } }) {
+  /* Get rendered DOM node */
+  const toinsert = output_area.element.find(`.${CLASS_NAME.split(' ')[0]}`);
+  /* e.g. Dispose of resources used by renderer library */
+  if (toinsert[0]) ReactDOM.unmountComponentAtNode(toinsert[0]);
+}
+
+/**
+ * Handle when a new output is added
+ */
+function handleAddOutput(event, { output, output_area }) {
+  /* Get rendered DOM node */
+  const toinsert = output_area.element.find(`.${CLASS_NAME.split(' ')[0]}`);
+  /** e.g. Inject a static image representation into the mime bundle for
+   *  endering on Github, etc.
+   */
+  // if (toinsert[0]) {
+  //   renderLibrary.toPng(toinsert[0]).then(url => {
+  //     const data = url.split(',')[1];
+  //     output_area.outputs
+  //       .filter(output => output.data[MIME_TYPE])
+  //       .forEach(output => {
+  //         output.data['image/png'] = data;
+  //       });
+  //   });
+  // }
+}
+
+/**
+ * Register the mime type and append_mime function with the notebook's 
+ * output area
+ */
+export function register_renderer(notebook, events, OutputArea) {
+  /* A function to render output of 'application/vnd.dataresource+json' mime type */
+  const append_mime = function(data, metadata, element) {
+    /* Create a DOM node to render to */
+    const toinsert = this.create_output_subarea(
+      metadata,
+      CLASS_NAME,
+      MIME_TYPE
+    );
     this.keyboard_manager.register_events(toinsert);
-    render(json, toinsert[(0)]);
+    /* Render data to DOM node */
+    const props = {
+      data,
+      metadata: metadata[MIME_TYPE],
+      width: element.width(),
+      height: DEFAULT_HEIGHT
+    };
+    render(props, toinsert[0]);
     element.append(toinsert);
+    const output_area = this;
+    this.element.on('changed', () => {
+      if (output_area.outputs.length > 0) ReactDOM.unmountComponentAtNode(toinsert[0]);
+    });
     return toinsert;
   };
-  // // Calculate the index of this renderer in `output_area.display_order`
-  // // e.g. Insert this renderer after any renderers with mime type that matches "+json"
+
+  /* Handle when an output is cleared or removed */
+  events.on('clear_output.CodeCell', handleClearOutput);
+  events.on('delete.Cell', handleClearOutput);
+
+  /* Handle when a new output is added */
+  events.on('output_added.OutputArea', handleAddOutput);
+
+  /**
+   * Calculate the index of this renderer in `output_area.display_order`
+   * e.g. Insert this renderer after any renderers with mime type that matches 
+   * "+json"
+   */
   // const mime_types = output_area.mime_types();
   // const json_types = mime_types.filter(mimetype => mimetype.includes('+json'));
   // const index = mime_types.lastIndexOf(json_types.pop() + 1);
-  // // ...or just insert it at the top
+
+  /* ...or just insert it at the top */
   const index = 0;
-  // Register the mime type and append_mime_type function with the output_area
-  output_area.register_mime_type(MIME_TYPE, append_mime, {
-    // Is output safe (no Javascript)?
+
+  /**
+   * Register the mime type and append_mime function with output_area
+   */
+  OutputArea.prototype.register_mime_type(MIME_TYPE, append_mime, {
+    /* Is output safe? */
     safe: true,
-    // Index of renderer in `output_area.display_order`
+    /* Index of renderer in `output_area.display_order` */
     index: index
   });
 }
@@ -52,16 +111,16 @@ export function register_renderer(notebook) {
  * on load notebook
  */
 export function render_cells(notebook) {
-  // Get all cells in notebook
+  /* Get all cells in notebook */
   notebook.get_cells().forEach(cell => {
-    // If a cell has output data of 'application/vnd.dataresource+json' mime type
+    /* If a cell has output data of 'application/vnd.dataresource+json' mime type */
     if (
-      cell.output_area && 
-      cell.output_area.outputs.find(output => 
-        output.data && output.data[MIME_TYPE]
+      cell.output_area &&
+      cell.output_area.outputs.find(
+        output => output.data && output.data[MIME_TYPE]
       )
     ) {
-      // Re-render the cell by executing it
+      /* Re-render the cell */
       notebook.render_cell_output(cell);
     }
   });

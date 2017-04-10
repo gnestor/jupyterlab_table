@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "jupyterlab_table_labextension",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "A JupyterLab extension for rendering JSONTable",
   "author": "Grant Nestor <grantnestor@gmail.com>",
-  "main": "lib/plugin.js",
+  "main": "src/plugin.js",
   "keywords": [
     "jupyter",
     "jupyterlab",
@@ -21,14 +21,18 @@
     "extension:disable": "jupyter labextension disable --py --sys-prefix jupyterlab_table"
   },
   "dependencies": {
-    "jupyterlab": "^0.17.0",
-    "@phosphor/algorithm": "^0.1.0",
-    "@phosphor/widgets": "^0.1.3",
+    "@jupyterlab/apputils": "^0.1.3",
+    "@jupyterlab/codemirror": "^0.1.3",
+    "@jupyterlab/docregistry": "^0.1.3",
+    "@jupyterlab/rendermime": "^0.1.3",
+    "@phosphor/algorithm": "^0.1.1",
+    "@phosphor/virtualdom": "^0.1.1",
+    "@phosphor/widgets": "^0.3.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "@jupyterlab/extension-builder": ">=0.10.0",
+    "@jupyterlab/extension-builder": "^0.10.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
     "babel-preset-latest": "^6.16.0",

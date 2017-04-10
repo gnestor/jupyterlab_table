@@ -1,10 +1,7 @@
 from IPython.display import display, JSON
-import json
-
 
 # Running `npm run build` will create static resources in the static
 # directory of this Python package (and create that directory if necessary).
-
 
 def _jupyter_labextension_paths():
     return [{
@@ -20,8 +17,7 @@ def _jupyter_nbextension_paths():
         'require': 'jupyterlab_table/extension'
     }]
 
-
-# A display class that can be used within a notebook. E.g.:
+# A display class that can be used within a notebook. 
 #   from jupyterlab_table import JSONTable
 #   JSONTable(data)
     
@@ -33,9 +29,6 @@ class JSONTable(JSON):
     Scalar types (None, number, string) are not allowed, only dict containers.
     """
 
-    def _data_and_metadata(self):
-        return self.data, self.metadata
-    
     def _ipython_display_(self):
         bundle = {
             'application/vnd.dataresource+json': self.data,

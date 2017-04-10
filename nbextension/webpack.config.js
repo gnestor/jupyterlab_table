@@ -1,5 +1,5 @@
-var version = require('./package.json').version;
 var path = require('path');
+var version = require('./package.json').version;
 
 /**
  * Custom webpack loaders are generally the same for all webpack bundles, hence
@@ -38,6 +38,19 @@ var loaders = [
   }
 ];
 
+var base = {
+  output: {
+    libraryTarget: 'amd',
+    devtoolModuleFilenameTemplate: 'webpack:///[absolute-resource-path]'
+  },
+  devtool: 'source-map',
+  module: { loaders },
+  externals: [
+    'nbextensions/jupyterlab_table/index',
+    'base/js/namespace'
+  ]
+};
+
 module.exports = [
   /**
    * Notebook extension
@@ -48,25 +61,18 @@ module.exports = [
    * "load_ipython_extension" function which is required for any notebook
    * extension.
    */
-  {
+  Object.assign({}, base, {
     entry: path.join(__dirname, 'src', 'extension.js'),
-    output: {
+    output: Object.assign({}, base.output, {
       filename: 'extension.js',
       path: path.join(
         __dirname,
         '..',
         'jupyterlab_table',
         'static'
-      ),
-      libraryTarget: 'amd'
-    },
-    devtool: 'source-map',
-    module: { loaders },
-    externals: [
-      'nbextensions/jupyterlab_table/index', 
-      'base/js/namespace'
-    ]
-  },
+      )
+    })
+  }),
   /**
    * Bundle for the notebook containing the custom widget views and models
    * 
@@ -75,21 +81,18 @@ module.exports = [
    * 
    * It must be an amd module
    */
-  {
+  Object.assign({}, base, {
     entry: path.join(__dirname, 'src', 'index.js'),
-    output: {
+    output: Object.assign({}, base.output, {
       filename: 'index.js',
       path: path.join(
         __dirname,
         '..',
         'jupyterlab_table',
         'static'
-      ),
-      libraryTarget: 'amd'
-    },
-    devtool: 'source-map',
-    module: { loaders }
-  },
+      )
+    })
+  }),
   /**
    * Embeddable jupyterlab_table bundle
    * 
@@ -105,17 +108,14 @@ module.exports = [
    * The target bundle is always `lib/index.js`, which is the path required
    * by the custom widget embedder.
    */
-  {
+  Object.assign({}, base, {
     entry: './src/embed.js',
-    output: {
+    output: Object.assign({}, base.output, {
       filename: 'index.js',
       path: path.join(__dirname, 'embed'),
-      libraryTarget: 'amd',
-      publicPath: (
-        'https://unpkg.com/jupyterlab_table@' + version + '/lib/'
-      )
-    },
-    devtool: 'source-map',
-    module: { loaders }
-  }
+      publicPath: 'https://unpkg.com/jupyterlab_table@' +
+        version +
+        '/lib/'
+    })
+  })
 ];

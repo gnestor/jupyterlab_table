@@ -1,6 +1,6 @@
-# jupyterlab_table
+# component
 
-The React component(s)
+A React component for rendering JSONTable
 
 ## Structure
 

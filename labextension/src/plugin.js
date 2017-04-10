@@ -1,27 +1,40 @@
-import { IRenderMime } from 'jupyterlab/lib/rendermime';
-import { IDocumentRegistry } from 'jupyterlab/lib/docregistry';
+import { IRenderMime } from '@jupyterlab/rendermime';
+import { IDocumentRegistry } from '@jupyterlab/docregistry';
+import { ILayoutRestorer, InstanceTracker } from '@jupyterlab/apputils';
 import { toArray, ArrayExt } from '@phosphor/algorithm';
 import { OutputRenderer } from './output';
 import { DocWidgetFactory } from './doc';
 import './index.css';
 
 /**
+ * The name of the factory
+ */
+const FACTORY = 'JSONTable';
+
+/**
+ * Set the extensions associated with application/vnd.dataresource+json
+ */
+const EXTENSIONS = ['.table.json'];
+const DEFAULT_EXTENSIONS = ['.table.json'];
+
+/**
  * Activate the extension.
  */
-function activatePlugin(app, rendermime, registry) {
+function activatePlugin(app, rendermime, registry, restorer) {
   /**
-   * Calculate the index of the renderer in the array renderers (e.g. Insert 
-   * this renderer after any renderers with mime type that matches "+json") 
-   * or simply pass an integer such as 0.
+   * Calculate the index of the renderer in the array renderers
+   * e.g. Insert this renderer after any renderers with mime type that matches 
+   * "+json"
    */
   // const index = ArrayExt.findLastIndex(
   //   toArray(rendermime.mimeTypes()),
   //   mime => mime.endsWith('+json')
   // ) + 1;
+  /* ...or just insert it at the top */
   const index = 0;
 
   /**
-   * Add the renderer to the registry of renderers.
+   * Add output renderer for application/vnd.dataresource+json data
    */
   rendermime.addRenderer(
     {
@@ -31,35 +44,49 @@ function activatePlugin(app, rendermime, registry) {
     index
   );
 
-  if ('table.json') {
-    /**
-     * Set the extensions associated with JSONTable.
-     */
-    const EXTENSIONS = [ '.table.json' ];
-    const DEFAULT_EXTENSIONS = [ '.table.json' ];
+  const factory = new DocWidgetFactory({
+    fileExtensions: EXTENSIONS,
+    defaultFor: DEFAULT_EXTENSIONS,
+    name: FACTORY
+  });
 
-    /**
-     * Add file handler for table.json files.
-     */
-    const options = {
-      fileExtensions: EXTENSIONS,
-      defaultFor: DEFAULT_EXTENSIONS,
-      name: 'JSONTable',
-      displayName: 'JSONTable',
-      modelName: 'text',
-      preferKernel: false,
-      canStartKernel: false
-    };
+  /**
+   * Add document renderer for .table.json files
+   */
+  registry.addWidgetFactory(factory);
 
-    registry.addWidgetFactory(new DocWidgetFactory(options));
-  }
+  const tracker = new InstanceTracker({
+    namespace: 'JSONTable',
+    shell: app.shell
+  });
+
+  /**
+   * Handle widget state deserialization
+   */
+  restorer.restore(tracker, {
+    command: 'file-operations:open',
+    args: widget => ({ path: widget.context.path, factory: FACTORY }),
+    name: widget => widget.context.path
+  });
+
+  /**
+   * Serialize widget state
+   */
+  factory.widgetCreated.connect((sender, widget) => {
+    tracker.add(widget);
+    /* Notify the instance tracker if restore data needs to update */
+    widget.context.pathChanged.connect(() => {
+      tracker.save(widget);
+    });
+  });
 }
 
+/**
+ * Configure jupyterlab plugin
+ */
 const Plugin = {
   id: 'jupyter.extensions.JSONTable',
-  requires: 'table.json'
-    ? [ IRenderMime, IDocumentRegistry ]
-    : [ IRenderMime ],
+  requires: [IRenderMime, IDocumentRegistry, ILayoutRestorer],
   activate: activatePlugin,
   autoStart: true
 };
