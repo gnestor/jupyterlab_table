@@ -1,98 +1,127 @@
+/* @flow */
 import React from 'react';
 import { Table, Column, SortDirection, AutoSizer } from 'react-virtualized';
-import 'react-virtualized/styles.css';
 // hack: `stream.Transform` (stream-browserify) is undefined in `csv-parse` when
 // built with @jupyterlabextension-builder
 import infer from 'jsontableschema/lib/infer';
 // import { infer } from 'jsontableschema';
-import './index.css';
+import "./index.css";
 
-const ROW_HEIGHT = 34;
+const ROW_HEIGHT = 36;
+const TABLE_MAX_HEIGHT = ROW_HEIGHT * 10;
 
-function inferSchema(data) {
+type Props = {
+  data: Array<Object>,
+  schema: { fields: Array<Object> },
+  theme: string
+};
+
+type State = {
+  data: Array<Object>,
+  schema: { fields: Array<Object> },
+  sortBy: string,
+  sortDirection: string
+};
+
+function getSampleRows(data: Array<Object>, sampleSize: number): Array<Object> {
+  return Array.from({ length: sampleSize }, () => {
+    const index = Math.floor(Math.random() * data.length);
+    return data[index];
+  });
+}
+
+function inferSchema(data: Array<Object>): { fields: Array<Object> } {
   // Take a sampling of rows from data
-  const range = Array.from({ length: 10 }, (v, i) =>
+  const range = Array.from({ length: 10 }, () =>
     Math.floor(Math.random() * data.length));
   // Separate headers and values
-  const headers = range.reduce(
-    (result, row) => [...new Set([...result, ...Object.keys(data[row])])],
-    []
+  const headers = Array.from(
+    range.reduce(
+      (result, row) => new Set([...result, ...Object.keys(data[row])]),
+      new Set()
+    )
   );
   const values = range.map(row => Object.values(data[row]));
   // Infer column types and return schema for data
   return infer(headers, values);
 }
 
+function getState(props: Props) {
+  const data = props.data;
+  const schema = props.schema || inferSchema(data);
+  return {
+    data,
+    schema
+  };
+}
+
 export default class VirtualizedTable extends React.Component {
-  state = { sortBy: null, sortDirection: null };
-  data = [];
-  schema = { fields: [] };
+  props: Props;
+  state: State = {
+    data: [],
+    schema: { fields: [] },
+    sortBy: '',
+    sortDirection: SortDirection.ASC
+  };
 
   componentWillMount() {
-    this.data = this.props.data;
-    this.schema = this.props.schema || inferSchema(this.props.data);
+    const state = getState(this.props);
+    this.setState(state);
   }
-  componentWillReceiveProps(nextProps) {
-    this.data = nextProps.data;
-    this.schema = nextProps.schema || inferSchema(nextProps.data);
+
+  componentWillReceiveProps(nextProps: Props) {
+    const state = getState(nextProps);
+    this.setState(state);
   }
 
   render() {
+    const rowCount = this.state.data.length + 1;
+    const height = rowCount * ROW_HEIGHT;
     return (
       <AutoSizer disableHeight>
         {({ width }) => (
           <Table
             // ref={ref => this.ref = ref}
+            className="table"
             // disableHeader={disableHeader}
-            // headerClassName={styles.headerColumn}
+            // headerClassName="th"
             headerHeight={ROW_HEIGHT}
-            headerStyle={{
-              fontWeight: 600,
-              textAlign: 'right',
-              // border: '1px solid #ddd',
-              // padding: '6px 13px'
-              textTransform: 'none',
-              outline: 0
-            }}
+            headerStyle={styles.header}
             height={
-              (this.data.length + 1) * ROW_HEIGHT < 400
-                ? (this.data.length + 1) * ROW_HEIGHT
-                : 400
+              this.props.height || height < TABLE_MAX_HEIGHT
+                ? height
+                : TABLE_MAX_HEIGHT
             }
             // noRowsRenderer={this._noRowsRenderer}
             // overscanRowCount={overscanRowCount}
-            // rowClassName={this._rowClassName}
+            rowClassName={({ index }) => index === -1 ? 'th' : 'tr'}
             rowHeight={ROW_HEIGHT}
-            rowGetter={({ index }) => this.data[index]}
-            rowCount={this.data.length}
-            rowStyle={({ index }) => ({
-              backgroundColor: index % 2 === 0 ? '#f8f8f8' : '#fff',
-              textAlign: 'right'
-            })}
+            rowGetter={({ index }) => this.state.data[index]}
+            rowCount={rowCount}
+            rowStyle={styles.row}
             // scrollToIndex={scrollToIndex}
             sort={this.sort}
             sortBy={this.state.sortBy}
             sortDirection={this.state.sortDirection}
-            style={{
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-              fontSize: 12,
-              fontWeight: 'normal'
-            }}
-            // width={this.schema.fields.length * 150}
-            width={width}
+            style={styles.table}
+            width={this.props.width || width}
           >
-            {this.schema.fields.map((field, fieldIndex) => (
+            {this.state.schema.fields.map((field, fieldIndex) => (
               <Column
-                key={fieldIndex}
-                label={field.name}
-                // cellDataGetter={({ columnData, dataKey, rowData }) =>
+                // cellRenderer={({ cellData, columnData, dataKey, isScrolling, rowData, rowIndex }) => (
+                //
+                // )}
+                // // cellDataGetter={({ columnData, dataKey, rowData }) =>
                 //   rowData
                 // }
-                dataKey={field.name}
                 // disableSort={!this._isSortEnabled()}
-                width={150}
+                dataKey={field.name}
+                key={fieldIndex}
                 flexGrow={1}
                 flexShrink={1}
+                label={`${field.name}`}
+                style={styles.column({ type: field.type, index: fieldIndex })}
+                width={150}
               />
             ))}
           </Table>
@@ -103,21 +132,67 @@ export default class VirtualizedTable extends React.Component {
 
   sort = ({ sortBy, sortDirection }) => {
     if (this.state.sortDirection === SortDirection.DESC) {
-      this.data = this.props.data;
-      this.setState({ sortBy: null, sortDirection: null });
+      this.setState({
+        data: this.props.data,
+        sortBy: null,
+        sortDirection: null
+      });
     } else {
-      const { type } = this.schema.fields.find(field => field.name === sortBy);
-      this.data = [...this.props.data].sort((a, b) => {
+      const { type } = this.state.schema.fields.find(
+        field => field.name === sortBy
+      );
+      const data = [...this.props.data].sort((a, b) => {
         if (type === 'date' || type === 'time' || type === 'datetime') {
           return sortDirection === SortDirection.ASC
             ? new Date(a[sortBy]) - new Date(b[sortBy])
             : new Date(b[sortBy]) - new Date(a[sortBy]);
         }
-        return sortDirection === SortDirection.ASC
-          ? a[sortBy] - b[sortBy]
-          : b[sortBy] - a[sortBy];
+        if (type === 'number' || type === 'integer') {
+          return sortDirection === SortDirection.ASC
+            ? parseInt(a[sortBy]) - parseInt(b[sortBy])
+            : parseInt(b[sortBy]) - parseInt(a[sortBy]);
+        }
+        if (type === 'string') {
+          return sortDirection === SortDirection.ASC
+            ? a[sortBy].toLowerCase() > b[sortBy].toLowerCase() ? 1 : -1
+            : b[sortBy].toLowerCase() > a[sortBy].toLowerCase() ? 1 : -1;
+        }
       });
-      this.setState({ sortBy, sortDirection });
+      this.setState({ data, sortBy, sortDirection });
     }
   };
 }
+
+const styles = {
+  table: {
+    boxSizing: 'border-box'
+  },
+  header: {
+    fontWeight: 'bold',
+    textAlign: 'right',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    padding: '0.5em 1em',
+    border: '1px solid #ddd'
+  },
+  row: ({ index }) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    background: index % 2 === 0 || index === -1
+      ? 'transparent'
+      : 'rgba(0, 0, 0, 0.03)'
+  }),
+  column: ({ type, index }) => ({
+    textAlign: type === 'number' || type === 'integer' ? 'right' : 'left',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    padding: '0.5em 1em',
+    borderRight: '1px solid #ddd',
+    borderBottom: '1px solid #ddd',
+    borderLeft: index === 0 ? '1px solid #ddd' : 'none'
+  })
+};
