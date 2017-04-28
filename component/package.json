@@ -18,10 +18,8 @@
   "author": "Grant Nestor",
   "license": "ISC",
   "dependencies": {
-    "fixed-data-table": "^0.6.3",
     "jsontableschema": "^0.2.2",
-    "react-addons-shallow-compare": "^15.4.2",
-    "react-virtualized": "^8.11.4"
+    "react-virtualized": "^9.7.3"
   },
   "peerDependencies": {
     "react": "^15.3.2"
