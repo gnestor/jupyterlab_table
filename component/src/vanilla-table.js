@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 // built with @jupyterlabextension-builder 
 import infer from 'jsontableschema/lib/infer';
 // import { infer } from 'jsontableschema';
-import './index.css';
+import '../index.css';
 
 function inferSchema(data) {
   const headers = data.reduce((result, row) => [...new Set([...result, ...Object.keys(row)])], []);

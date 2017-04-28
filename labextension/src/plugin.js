@@ -4,7 +4,7 @@ import { ILayoutRestorer, InstanceTracker } from '@jupyterlab/apputils';
 import { toArray, ArrayExt } from '@phosphor/algorithm';
 import { OutputRenderer } from './output';
 import { DocWidgetFactory } from './doc';
-import './index.css';
+import '../index.css';
 
 /**
  * The name of the factory
@@ -33,17 +33,6 @@ function activatePlugin(app, rendermime, registry, restorer) {
   /* ...or just insert it at the top */
   const index = 0;
 
-  /**
-   * Add output renderer for application/vnd.tableschema+json data
-   */
-  rendermime.addRenderer(
-    {
-      mimeType: 'application/vnd.tableschema+json',
-      renderer: new OutputRenderer()
-    },
-    index
-  );
-  
   /**
    * Add output renderer for application/vnd.dataresource+json data
    */

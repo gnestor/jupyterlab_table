@@ -2,19 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import { VirtualizedGrid, VirtualizedTable } from 'jupyterlab_table_react';
-import './index.css';
+import '../index.css';
 
 const MIME_TYPE = 'application/vnd.dataresource+json';
 const CLASS_NAME = 'output_JSONTable rendered_html';
 const DEFAULT_WIDTH = 840;
 const DEFAULT_HEIGHT = 360;
-
-/**
- * Render data to the DOM node
- */
-function render(props, node) {
-  ReactDOM.render(<JSONTableComponent {...props} />, node);
-}
 
 /**
  * Handle when an output is cleared or removed
@@ -33,7 +26,7 @@ function handleAddOutput(event, { output, output_area }) {
   /* Get rendered DOM node */
   const toinsert = output_area.element.find(`.${CLASS_NAME.split(' ')[0]}`);
   /** e.g. Inject a static image representation into the mime bundle for
-   *  endering on Github, etc.
+   *  rendering on Github, etc.
    */
   // if (toinsert[0]) {
   //   renderLibrary.toPng(toinsert[0]).then(url => {

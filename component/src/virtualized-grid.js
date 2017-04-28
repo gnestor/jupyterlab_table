@@ -5,7 +5,7 @@ import { MultiGrid, AutoSizer } from 'react-virtualized';
 // built with @jupyterlabextension-builder
 import infer from 'jsontableschema/lib/infer';
 // import { infer } from 'jsontableschema';
-import './index.css';
+import '../index.css';
 
 const ROW_HEIGHT = 36;
 const COLUMN_WIDTH = 72;

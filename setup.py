@@ -1,13 +1,14 @@
 from setuptools import setup
 from setupbase import create_cmdclass, install_npm
 
-cmdclass = create_cmdclass(['labextension', 'nbextension'])
+cmdclass = create_cmdclass(['component', 'labextension', 'nbextension'])
+cmdclass['component'] = install_npm('component')
 cmdclass['labextension'] = install_npm('labextension')
 cmdclass['nbextension'] = install_npm('nbextension')
 
 setup_args = dict(
     name                 = 'jupyterlab_table',
-    version              = '0.18.0',
+    version              = '0.20.2',
     packages             = ['jupyterlab_table'],
     author               = 'Grant Nestor',
     author_email         = 'grantnestor@gmail.com',
@@ -39,7 +40,7 @@ setup_args = dict(
     ],
     cmdclass             = cmdclass,
     install_requires     = [
-        'jupyterlab>=0.18.0',
+        'jupyterlab>=0.20.2',
         'notebook>=4.3.0',
         'ipython>=1.0.0'
     ]

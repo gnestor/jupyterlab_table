@@ -9,7 +9,7 @@ import 'fixed-data-table/dist/fixed-data-table.min.css';
 // built with @jupyterlabextension-builder 
 import infer from 'jsontableschema/lib/infer';
 // import { infer } from 'jsontableschema';
-import './index.css';
+import '../index.css';
 
 const ROW_HEIGHT = 34;
 
