@@ -32,7 +32,7 @@ class ErrorDisplay extends React.Component {
 }
 
 /**
- * A widget for rendering jupyterlab_table files
+ * A widget for rendering JSONTable files
  */
 export class DocWidget extends Widget {
   constructor(context) {
@@ -106,6 +106,9 @@ export class DocWidget extends Widget {
     if (this.isAttached && this._context.isReady) this._render();
   }
 
+  /**
+   * Render data to DOM node
+   */
   _render() {
     const content = this._context.model.toString();
     try {
@@ -123,6 +126,9 @@ export class DocWidget extends Widget {
     }
   }
 
+  /**
+   * A message handler invoked on a `'path-changed'` message
+   */
   _onPathChanged() {
     this.title.label = this._context.path.split('/').pop();
   }
@@ -133,8 +139,8 @@ export class DocWidget extends Widget {
  */
 export class DocWidgetFactory extends ABCWidgetFactory {
   /**
-   * Create a new widget instance
-   */
+    * Create a new widget instance
+    */
   createNewWidget(context) {
     return new DocWidget(context);
   }

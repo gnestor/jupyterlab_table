@@ -1,40 +1,43 @@
 {
   "private": true,
   "name": "jupyterlab_table_labextension",
-  "version": "0.18.0",
+  "version": "0.20.2",
   "description": "A JupyterLab extension for rendering JSONTable",
   "author": "Grant Nestor <grantnestor@gmail.com>",
-  "main": "src/plugin.js",
+  "main": "lib/plugin.js",
+  "files": [
+    "lib/*.js",
+    "*.css"
+  ],
   "keywords": [
     "jupyter",
     "jupyterlab",
     "jupyterlab extension"
   ],
+  "jupyterlab": {
+    "extension": true
+  },
   "scripts": {
-    "build": "node build_extension.js",
-    "watch": "watch \"npm install\" src ../component --wait 10 --ignoreDotFiles",
-    "preinstall": "npm install ../component",
-    "prepublish": "npm run build",
-    "extension:install": "jupyter labextension install --symlink --py --sys-prefix jupyterlab_table",
-    "extension:uninstall": "jupyter labextension uninstall --py --sys-prefix jupyterlab_table",
-    "extension:enable": "jupyter labextension enable --py --sys-prefix jupyterlab_table",
-    "extension:disable": "jupyter labextension disable --py --sys-prefix jupyterlab_table"
+    "build": "babel src --out-dir lib",
+    "prepublishOnly": "npm run build",
+    "watch": "watch \"npm run build\" src --wait 10 --ignoreDotFiles",
+    "extension:install": "jupyter labextension link .",
+    "extension:uninstall": "jupyter labextension unlink ."
   },
   "dependencies": {
-    "@jupyterlab/apputils": "^0.1.3",
-    "@jupyterlab/codemirror": "^0.1.3",
-    "@jupyterlab/docregistry": "^0.1.3",
-    "@jupyterlab/rendermime": "^0.1.3",
-    "@phosphor/algorithm": "^0.1.1",
-    "@phosphor/virtualdom": "^0.1.1",
-    "@phosphor/widgets": "^0.3.0",
+    "@jupyterlab/apputils": "^0.3.1",
+    "@jupyterlab/codemirror": "^0.3.1",
+    "@jupyterlab/docregistry": "^0.3.1",
+    "@jupyterlab/rendermime": "^0.3.1",
+    "@phosphor/algorithm": "^1.0.0",
+    "@phosphor/widgets": "^1.0.0",
+    "jupyterlab_table_react": "file:../component",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "@jupyterlab/extension-builder": "^0.10.0",
+    "babel-cli": "^6.24.0",
     "babel-core": "^6.18.2",
-    "babel-loader": "^6.2.7",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",

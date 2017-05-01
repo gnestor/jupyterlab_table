@@ -4,7 +4,7 @@ import { ILayoutRestorer, InstanceTracker } from '@jupyterlab/apputils';
 import { toArray, ArrayExt } from '@phosphor/algorithm';
 import { OutputRenderer } from './output';
 import { DocWidgetFactory } from './doc';
-import './index.css';
+import '../index.css';
 
 /**
  * The name of the factory

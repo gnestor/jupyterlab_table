@@ -27,7 +27,7 @@ export class OutputWidget extends Widget {
   }
 
   /**
-   * A message handler invoked on an `'before-detach'` message
+   * A message handler invoked on a `'before-detach'` message
    */
   onBeforeDetach(msg) {
     /* Dispose of resources used by this widget */

@@ -10,7 +10,7 @@ var loaders = [
     test: /\.js$/,
     include: [
       path.join(__dirname, 'src'),
-      path.join(__dirname, 'node_modules', 'jupyterlab_table_react')
+      path.join(__dirname, '..', 'component')
     ],
     loader: 'babel-loader',
     query: { presets: [ 'latest', 'stage-0', 'react' ] }
@@ -47,7 +47,9 @@ var base = {
   module: { loaders },
   externals: [
     'nbextensions/jupyterlab_table/index',
-    'base/js/namespace'
+    'base/js/namespace',
+    'base/js/events',
+    'notebook/js/outputarea'
   ]
 };
 

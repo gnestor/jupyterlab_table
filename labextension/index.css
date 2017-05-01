@@ -1,16 +1,11 @@
-/* 
-  Copyright (c) Jupyter Development Team.
-  Distributed under the terms of the Modified BSD License. 
-*/
-
 .jp-OutputWidgetJSONTable, .jp-DocWidgetJSONTable {
   width: 100%;
   padding: 0;
 }
 
 .jp-OutputWidgetJSONTable {
-  padding-top: 5px;
-  height: 360px;
+  margin-top: 5px;
+  max-height: 360px;
 }
 
 .jp-DocWidgetJSONTable {

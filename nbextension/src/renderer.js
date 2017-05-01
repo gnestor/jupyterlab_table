@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import JSONTableComponent from 'jupyterlab_table_react';
-import './index.css';
+import '../index.css';
 
 const MIME_TYPE = 'application/vnd.dataresource+json';
 const CLASS_NAME = 'output_JSONTable rendered_html';
-const DEFAULT_WIDTH = 840;
-const DEFAULT_HEIGHT = 360;
 
 /**
  * Render data to the DOM node
@@ -32,7 +30,7 @@ function handleAddOutput(event, { output, output_area }) {
   /* Get rendered DOM node */
   const toinsert = output_area.element.find(`.${CLASS_NAME.split(' ')[0]}`);
   /** e.g. Inject a static image representation into the mime bundle for
-   *  endering on Github, etc.
+   *  rendering on Github, etc.
    */
   // if (toinsert[0]) {
   //   renderLibrary.toPng(toinsert[0]).then(url => {
@@ -64,15 +62,11 @@ export function register_renderer(notebook, events, OutputArea) {
     const props = {
       data,
       metadata: metadata[MIME_TYPE],
-      width: element.width(),
-      height: DEFAULT_HEIGHT
+      width: this.element.width(),
+      height: this.element.height() || DEFAULT_HEIGHT,
     };
     render(props, toinsert[0]);
     element.append(toinsert);
-    const output_area = this;
-    this.element.on('changed', () => {
-      if (output_area.outputs.length > 0) ReactDOM.unmountComponentAtNode(toinsert[0]);
-    });
     return toinsert;
   };
 

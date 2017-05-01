@@ -1,5 +1,6 @@
 labextension/lib/
 nbextension/lib/
+component/lib/
 nbextension/embed/
 node_modules/
 npm-debug.log
