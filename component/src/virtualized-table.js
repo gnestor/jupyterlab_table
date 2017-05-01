@@ -5,7 +5,6 @@ import { Table, Column, SortDirection, AutoSizer } from 'react-virtualized';
 // built with @jupyterlabextension-builder
 import infer from 'jsontableschema/lib/infer';
 // import { infer } from 'jsontableschema';
-import '../index.css';
 
 const ROW_HEIGHT = 36;
 const TABLE_MAX_HEIGHT = ROW_HEIGHT * 10;

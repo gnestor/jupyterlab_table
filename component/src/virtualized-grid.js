@@ -1,31 +1,29 @@
 /* @flow */
 import React from 'react';
-import { MultiGrid, AutoSizer } from 'react-virtualized';
+import { MultiGrid, AutoSizer, ColumnSizer } from 'react-virtualized';
 // hack: `stream.Transform` (stream-browserify) is undefined in `csv-parse` when
 // built with @jupyterlabextension-builder
 import infer from 'jsontableschema/lib/infer';
 // import { infer } from 'jsontableschema';
-import '../index.css';
-
-const ROW_HEIGHT = 36;
-const COLUMN_WIDTH = 72;
-const GRID_MAX_HEIGHT = ROW_HEIGHT * 10;
-// The width per text character for calculating widths for columns
-const COLUMN_CHARACTER_WIDTH = 14;
-// The number of sample rows that should be used to infer types for columns
-// and widths for columns
-const SAMPLE_SIZE = 10;
 
 type Props = {
   data: Array<Object>,
   schema: { fields: Array<Object> },
-  theme: string
+  theme?: string,
+  width?: number,
+  height?: number,
+  rowHeight: number,
+  maxRows: number,
+  columnMinWidth: number,
+  columnMaxWidth: number,
+  sampleSize: number,
+  overscanColumnCount: number,
+  overscanRowCount: number
 };
 
 type State = {
   data: Array<Object>,
-  schema: { fields: Array<Object> },
-  columnWidths: Array<number>
+  schema: { fields: Array<Object> }
 };
 
 function getSampleRows(data: Array<Object>, sampleSize: number): Array<Object> {
@@ -35,11 +33,14 @@ function getSampleRows(data: Array<Object>, sampleSize: number): Array<Object> {
   });
 }
 
-function inferSchema(data: Array<Object>): { fields: Array<Object> } {
-  const sampleRows = getSampleRows(data, SAMPLE_SIZE);
+function inferSchema(
+  data: Array<Object>,
+  sampleSize: number
+): { fields: Array<Object> } {
+  const sampleRows = getSampleRows(data, sampleSize);
   const headers = Array.from(
     sampleRows.reduce(
-      (result, row) => new Set([...result, ...Object.keys(row)]),
+      (result, row) => new Set([...Array.from(result), ...Object.keys(row)]),
       new Set()
     )
   );
@@ -49,37 +50,34 @@ function inferSchema(data: Array<Object>): { fields: Array<Object> } {
 
 function getState(props: Props) {
   const data = props.data;
-  const schema = props.schema || inferSchema(data);
+  const schema = props.schema || inferSchema(data, props.sampleSize);
   const columns = schema.fields.map(field => field.name);
   const headers = columns.reduce(
     (result, column) => ({ ...result, [column]: column }),
     {}
   );
-  const columnWidths = columns.map(column => {
-    const sampleRows = getSampleRows(data, SAMPLE_SIZE);
-    return [headers, ...sampleRows].reduce(
-      (result, row) =>
-        `${row[column]}`.length > result ? `${row[column]}`.length : result,
-      Math.ceil(COLUMN_WIDTH / getCharacterWidth(COLUMN_CHARACTER_WIDTH))
-    );
-  });
   return {
     data: [headers, ...data],
-    schema,
-    columnWidths
+    schema
   };
-}
-
-function getCharacterWidth(fontSize) {
-  return fontSize * 0.86;
 }
 
 export default class VirtualizedGrid extends React.Component {
   props: Props;
   state: State = {
     data: [],
-    schema: { fields: [] },
-    columnWidths: []
+    schema: { fields: [] }
+  };
+
+  static defaultProps = {
+    theme: 'light',
+    rowHeight: 36,
+    maxRows: 10,
+    columnMinWidth: 100,
+    columnMaxWidth: 300,
+    sampleSize: 10,
+    overscanColumnCount: 15,
+    overscanRowCount: 150
   };
 
   componentWillMount() {
@@ -92,28 +90,31 @@ export default class VirtualizedGrid extends React.Component {
     this.setState(state);
   }
 
-  cellRenderer = (
-    {
-      columnIndex,
-      key,
-      parent,
-      rowIndex,
-      style
-    }: {
-      columnIndex: number,
-      key: string,
-      parent: mixed,
-      rowIndex: number,
-      style: Object
-    }
-  ) => {
+  cellRenderer = ({
+    columnIndex,
+    key,
+    parent,
+    rowIndex,
+    style
+  }: {
+    columnIndex: number,
+    key: string,
+    parent: mixed,
+    rowIndex: number,
+    style: Object
+  }) => {
     const { name: column, type } = this.state.schema.fields[columnIndex];
     const value = this.state.data[rowIndex][column];
     return (
       <div
         key={key}
-        className={rowIndex === 0 || columnIndex === 0 ? 'th' : 'td'}
-        style={styles.cell({ columnIndex, rowIndex, style, type })}
+        style={styles.cell({
+          columnIndex,
+          rowIndex,
+          style,
+          type,
+          theme: this.props.theme
+        })}
       >
         {value}
       </div>
@@ -122,27 +123,36 @@ export default class VirtualizedGrid extends React.Component {
 
   render() {
     const rowCount = this.state.data.length;
-    const height = rowCount * ROW_HEIGHT;
+    const { rowHeight, maxRows } = this.props;
+    const maxHeight = rowCount > maxRows
+      ? maxRows * rowHeight
+      : rowCount * rowHeight;
     return (
       <AutoSizer disableHeight>
         {({ width }) => (
-          <MultiGrid
-            cellRenderer={this.cellRenderer}
+          <ColumnSizer
+            columnMaxWidth={this.props.columnMaxWidth}
+            columnMinWidth={this.props.columnMinWidth}
             columnCount={this.state.schema.fields.length}
-            columnWidth={({ index }) =>
-              this.state.columnWidths[index] *
-                getCharacterWidth(
-                  this.props.fontSize || COLUMN_CHARACTER_WIDTH
-                ) || COLUMN_WIDTH}
-            fixedColumnCount={1}
-            fixedRowCount={1}
-            height={this.props.height > height ? height : this.props.height}
-            overscanColumnCount={15}
-            overscanRowCount={150}
-            rowCount={rowCount}
-            rowHeight={ROW_HEIGHT}
-            width={this.props.width || width}
-          />
+            width={width}
+          >
+            {({ adjustedWidth, getColumnWidth, registerChild }) => (
+              <MultiGrid
+                ref={registerChild}
+                cellRenderer={this.cellRenderer}
+                columnCount={this.state.schema.fields.length}
+                columnWidth={getColumnWidth}
+                fixedColumnCount={1}
+                fixedRowCount={1}
+                height={this.props.height || maxHeight}
+                overscanColumnCount={this.props.overscanColumnCount}
+                overscanRowCount={this.props.overscanRowCount}
+                rowCount={rowCount}
+                rowHeight={rowHeight}
+                width={this.props.width || adjustedWidth}
+              />
+            )}
+          </ColumnSizer>
         )}
       </AutoSizer>
     );
@@ -150,7 +160,7 @@ export default class VirtualizedGrid extends React.Component {
 }
 
 const styles = {
-  cell: ({ columnIndex, rowIndex, style, type }) => ({
+  cell: ({ columnIndex, rowIndex, style, type, theme }) => ({
     ...style,
     boxSizing: 'border-box',
     padding: '0.5em 1em',
