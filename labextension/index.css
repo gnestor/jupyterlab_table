@@ -6,11 +6,11 @@
 
 .jp-OutputWidgetJSONTable {
   margin-top: 5px;
-  height: 360px;
+  max-height: 360px;
 }
 
 .jp-DocWidgetJSONTable {
-  overflow: auto;
+  overflow: hidden;
 }
 
 .jp-DocWidgetJSONTable .jp-mod-error {

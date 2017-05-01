@@ -1,9 +1,9 @@
 div.output_subarea.output_JSONTable {
   width: 100%;
   max-width: 100%;
-  height: 360px;
+  max-height: 360px;
   padding: 0;
   margin-top: 0.4em;
-  overflow: auto;
+  overflow: hidden;
   font-size: 14px;
 }

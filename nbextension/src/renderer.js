@@ -62,8 +62,7 @@ export function register_renderer(notebook, events, OutputArea) {
     const props = {
       ...data,
       metadata: metadata[MIME_TYPE],
-      width: element.width(),
-      height: DEFAULT_HEIGHT,
+      width: this.element.width(),
       fontSize: 14
     };
     ReactDOM.render(React.createElement(type, props), toinsert[0]);

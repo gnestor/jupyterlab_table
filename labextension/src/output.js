@@ -70,7 +70,6 @@ export class OutputWidget extends Widget {
       schema,
       metadata,
       width: this.node.offsetWidth,
-      height: 360,
       fontSize: 13
     };
     ReactDOM.render(React.createElement(type, props), this.node);
