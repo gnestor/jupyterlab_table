@@ -6,7 +6,7 @@ A JupyterLab and Jupyter Notebook extension for rendering [JSON Table Schema](ht
 
 ## Prerequisites
 
-* JupyterLab ^0.18.0 and/or Notebook >=4.3.0
+* JupyterLab ^0.20.0 and/or Notebook >=4.3.0
 
 ## Usage
 
@@ -86,12 +86,11 @@ To render a .table.json file as a tree, simply open it:
 ## Install
 
 ```bash
-pip install jupyterlab_table
 # For JupyterLab
-jupyter labextension install --symlink --py --sys-prefix jupyterlab_table
-jupyter labextension enable --py --sys-prefix jupyterlab_table
+jupyter labextension install jupyterlab_table
 # For Notebook
-jupyter nbextension install --symlink --py --sys-prefix jupyterlab_table
+pip install jupyterlab_table
+jupyter nbextension install --py --sys-prefix jupyterlab_table
 jupyter nbextension enable --py --sys-prefix jupyterlab_table
 ```
 
@@ -100,8 +99,8 @@ jupyter nbextension enable --py --sys-prefix jupyterlab_table
 ```bash
 pip install -e .
 # For JupyterLab
-jupyter labextension install --symlink --py --sys-prefix jupyterlab_table
-jupyter labextension enable --py --sys-prefix jupyterlab_table
+cd labextension
+jupyter labextension link .
 # For Notebook
 jupyter nbextension install --symlink --py --sys-prefix jupyterlab_table
 jupyter nbextension enable --py --sys-prefix jupyterlab_table

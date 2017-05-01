@@ -6,9 +6,8 @@
  * dynamically.
  */
 
-__webpack_public_path__ = document
-  .querySelector('body')
-  .getAttribute('data-base-url') +
+__webpack_public_path__ =
+  document.querySelector('body').getAttribute('data-base-url') +
   'nbextensions/jupyterlab_table/';
 
 /**

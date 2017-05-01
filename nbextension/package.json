@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "jupyterlab_table_nbextension",
-  "version": "0.18.0",
+  "version": "0.20.2",
   "description": "A Jupyter Notebook extension for rendering JSON Table Schema",
   "author": "Grant Nestor <grantnestor@gmail.com>",
   "main": "src/index.js",
@@ -12,15 +12,15 @@
   ],
   "scripts": {
     "build": "webpack",
-    "watch": "watch \"npm install\" src ../component --wait 10 --ignoreDotFiles",
-    "preinstall": "npm install ../component",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
+    "watch": "watch \"npm run build\" src --wait 10 --ignoreDotFiles",
     "extension:install": "jupyter nbextension install --symlink --py --sys-prefix jupyterlab_table",
     "extension:uninstall": "jupyter nbextension uninstall --py --sys-prefix jupyterlab_table",
     "extension:enable": "jupyter nbextension enable --py --sys-prefix jupyterlab_table",
     "extension:disable": "jupyter nbextension disable --py --sys-prefix jupyterlab_table"
   },
   "dependencies": {
+    "jupyterlab_table_react": "file:../component",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
   },

@@ -28,7 +28,7 @@ export class OutputWidget extends Widget {
   }
 
   /**
-   * A message handler invoked on an `'before-detach'` message
+   * A message handler invoked on a `'before-detach'` message
    */
   onBeforeDetach(msg) {
     /* Dispose of resources used by this widget */
@@ -70,7 +70,6 @@ export class OutputWidget extends Widget {
       schema,
       metadata,
       width: this.node.offsetWidth,
-      height: 360,
       fontSize: 13
     };
     ReactDOM.render(React.createElement(type, props), this.node);

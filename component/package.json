@@ -1,10 +1,15 @@
 {
   "name": "jupyterlab_table_react",
   "version": "1.0.0",
-  "description": "A React component for rendering JSON schema table",
-  "main": "index.js",
+  "description": "A React component for rendering JSONTable",
+  "main": "lib/index.js",
+  "files": [
+    "lib/*.js",
+    "*.css"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel src --out-dir lib",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "jupyter",
@@ -13,10 +18,17 @@
   "author": "Grant Nestor",
   "license": "ISC",
   "dependencies": {
-    "fixed-data-table": "^0.6.3",
     "jsontableschema": "^0.2.2",
-    "react": "^15.3.2",
-    "react-addons-shallow-compare": "^15.4.2",
-    "react-virtualized": "^8.11.4"
+    "react-virtualized": "^9.7.3"
+  },
+  "peerDependencies": {
+    "react": "^15.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-core": "^6.18.2",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0"
   }
 }
