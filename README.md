@@ -1,6 +1,6 @@
 # jupyterlab_table
 
-A JupyterLab and Jupyter Notebook extension for rendering [JSON Table Schema](http://frictionlessdata.io/guides/json-table-schema/)
+A JupyterLab and Jupyter Notebook extension for rendering [JSON Table Schema](http://frictionlessdata.io/guides/table-schema/)
 
 ![output renderer](http://g.recordit.co/X8XNLpKs21.gif)
 
